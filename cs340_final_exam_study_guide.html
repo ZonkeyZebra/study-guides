@@ -1,370 +1,58 @@
-<h2 class="sr-only">Interactive study guide for the final exam covering design patterns, DynamoDB, SQS, and related
-  software engineering topics.</h2>
+<!DOCTYPE html>
+<html lang="en">
 
-<style>
-  :root {
-    --color-background-primary: light-dark(rgba(255, 255, 255, 1), rgba(48, 48, 46, 1));
-    --color-background-secondary: light-dark(rgba(245, 244, 237, 1), rgba(38, 38, 36, 1));
-    --color-background-tertiary: light-dark(rgba(250, 249, 245, 1), rgba(20, 20, 19, 1));
-    --color-background-inverse: light-dark(rgba(20, 20, 19, 1), rgba(250, 249, 245, 1));
-    --color-background-ghost: light-dark(rgba(255, 255, 255, 0), rgba(48, 48, 46, 0));
-    --color-background-info: light-dark(rgba(214, 228, 246, 1), rgba(37, 62, 95, 1));
-    --color-background-danger: light-dark(rgba(247, 236, 236, 1), rgba(96, 42, 40, 1));
-    --color-background-success: light-dark(rgba(233, 241, 220, 1), rgba(27, 70, 20, 1));
-    --color-background-warning: light-dark(rgba(246, 238, 223, 1), rgba(72, 58, 15, 1));
-    --color-background-disabled: light-dark(rgba(255, 255, 255, 0.5), rgba(48, 48, 46, 0.5));
-    --color-text-primary: light-dark(rgba(20, 20, 19, 1), rgba(250, 249, 245, 1));
-    --color-text-secondary: light-dark(rgba(61, 61, 58, 1), rgba(194, 192, 182, 1));
-    --color-text-tertiary: light-dark(rgba(115, 114, 108, 1), rgba(156, 154, 146, 1));
-    --color-text-inverse: light-dark(rgba(255, 255, 255, 1), rgba(20, 20, 19, 1));
-    --color-text-info: light-dark(rgba(50, 102, 173, 1), rgba(128, 170, 221, 1));
-    --color-text-danger: light-dark(rgba(127, 44, 40, 1), rgba(238, 136, 132, 1));
-    --color-text-success: light-dark(rgba(38, 91, 25, 1), rgba(122, 185, 72, 1));
-    --color-text-warning: light-dark(rgba(90, 72, 21, 1), rgba(209, 160, 65, 1));
-    --color-text-disabled: light-dark(rgba(20, 20, 19, 0.5), rgba(250, 249, 245, 0.5));
-    --color-text-ghost: light-dark(rgba(115, 114, 108, 0.5), rgba(156, 154, 146, 0.5));
-    --color-border-primary: light-dark(rgba(31, 30, 29, 0.4), rgba(222, 220, 209, 0.4));
-    --color-border-secondary: light-dark(rgba(31, 30, 29, 0.3), rgba(222, 220, 209, 0.3));
-    --color-border-tertiary: light-dark(rgba(31, 30, 29, 0.15), rgba(222, 220, 209, 0.15));
-    --color-border-inverse: light-dark(rgba(255, 255, 255, 0.3), rgba(20, 20, 19, 0.15));
-    --color-border-ghost: light-dark(rgba(31, 30, 29, 0), rgba(222, 220, 209, 0));
-    --color-border-info: light-dark(rgba(70, 130, 213, 1), rgba(70, 130, 213, 1));
-    --color-border-danger: light-dark(rgba(167, 61, 57, 1), rgba(205, 92, 88, 1));
-    --color-border-success: light-dark(rgba(67, 116, 38, 1), rgba(89, 145, 48, 1));
-    --color-border-warning: light-dark(rgba(128, 92, 31, 1), rgba(168, 120, 41, 1));
-    --color-border-disabled: light-dark(rgba(31, 30, 29, 0.1), rgba(222, 220, 209, 0.1));
-    --color-ring-primary: light-dark(rgba(20, 20, 19, 0.7), rgba(250, 249, 245, 0.7));
-    --color-ring-secondary: light-dark(rgba(61, 61, 58, 0.7), rgba(194, 192, 182, 0.7));
-    --color-ring-inverse: light-dark(rgba(255, 255, 255, 0.7), rgba(20, 20, 19, 0.7));
-    --color-ring-info: light-dark(rgba(50, 102, 173, 0.5), rgba(128, 170, 221, 0.5));
-    --color-ring-danger: light-dark(rgba(167, 61, 57, 0.5), rgba(205, 92, 88, 0.5));
-    --color-ring-success: light-dark(rgba(67, 116, 38, 0.5), rgba(89, 145, 48, 0.5));
-    --color-ring-warning: light-dark(rgba(128, 92, 31, 0.5), rgba(168, 120, 41, 0.5));
-    --font-sans: Anthropic Sans, sans-serif;
-    --font-mono: ui-monospace, monospace;
-    --font-weight-normal: 400;
-    --font-weight-medium: 500;
-    --font-weight-semibold: 600;
-    --font-weight-bold: 700;
-    --font-text-xs-size: 12px;
-    --font-text-sm-size: 14px;
-    --font-text-md-size: 16px;
-    --font-text-lg-size: 20px;
-    --font-heading-xs-size: 12px;
-    --font-heading-sm-size: 14px;
-    --font-heading-md-size: 16px;
-    --font-heading-lg-size: 20px;
-    --font-heading-xl-size: 24px;
-    --font-heading-2xl-size: 28px;
-    --font-heading-3xl-size: 36px;
-    --font-text-xs-line-height: 1.4;
-    --font-text-sm-line-height: 1.4;
-    --font-text-md-line-height: 1.4;
-    --font-text-lg-line-height: 1.25;
-    --font-heading-xs-line-height: 1.4;
-    --font-heading-sm-line-height: 1.4;
-    --font-heading-md-line-height: 1.4;
-    --font-heading-lg-line-height: 1.25;
-    --font-heading-xl-line-height: 1.25;
-    --font-heading-2xl-line-height: 1.1;
-    --font-heading-3xl-line-height: 1;
-    --border-radius-xs: 4px;
-    --border-radius-sm: 6px;
-    --border-radius-md: 8px;
-    --border-radius-lg: 10px;
-    --border-radius-xl: 12px;
-    --border-radius-full: 9999px;
-    --border-width-regular: 0.5px;
-    --shadow-hairline: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
-    color-scheme: light dark;
-    --font-serif: "Anthropic Serif", Georgia, "Times New Roman", serif;
-    --p: var(--color-text-primary);
-    --s: var(--color-text-secondary);
-    --t: var(--color-text-tertiary);
-    --bg2: var(--color-background-secondary);
-    --b: var(--color-border-secondary);
-  }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CS 340 Final Exam Study Guide</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
 
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 5px;
-  }
+<body>
+  <div class="wrap">
+    <div class="header">
+      <h2 class="sr-only">Interactive study guide for the final exam covering design patterns, DynamoDB, SQS,
+        and related software engineering topics.</h2>
+      <p style="font-size: 22px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 6px;">Final exam
+        study
+        guide</p>
+      <p style="font-size: 14px; color: var(--color-text-secondary);">Click any topic to expand notes and key questions.
+      </p>
+    </div>
 
-  body {
-    font-family: var(--font-sans);
-  }
+    <div class="exam-info">
+      <div class="stat">
+        <div class="stat-label">T/F questions</div>
+        <div class="stat-value">8 × 2 pts</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Multiple choice</div>
+        <div class="stat-value">11 × 4 pts</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Essay questions</div>
+        <div class="stat-value">5 × 8 pts</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Time</div>
+        <div class="stat-value">2–3 hours</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Language</div>
+        <div class="stat-value">TypeScript</div>
+      </div>
+    </div>
 
-  .wrap {
-    padding: 1rem 0 2rem;
-  }
+    <div class="filter-bar">
+      <button class="filter-btn active" onclick="filterTopics('all', this)">All topics</button>
+      <button class="filter-btn" onclick="filterTopics('pattern', this)">Design patterns</button>
+      <button class="filter-btn" onclick="filterTopics('cloud', this)">Cloud / AWS</button>
+      <button class="filter-btn" onclick="filterTopics('principle', this)">Principles</button>
+    </div>
 
-  .header {
-    margin-bottom: 1.5rem;
-  }
-
-  .exam-info {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 10px;
-    margin-bottom: 1.5rem;
-  }
-
-  .stat {
-    background: var(--color-background-secondary);
-    border-radius: var(--border-radius-md);
-    padding: 0.75rem 1rem;
-  }
-
-  .stat-label {
-    font-size: 12px;
-    color: var(--color-text-secondary);
-    margin-bottom: 4px;
-  }
-
-  .stat-value {
-    font-size: 16px;
-    font-weight: 500;
-    color: var(--color-text-primary);
-  }
-
-  .filter-bar {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 1.25rem;
-  }
-
-  .filter-btn {
-    font-size: 13px;
-    padding: 5px 14px;
-    border-radius: 20px;
-    border: 0.5px solid var(--color-border-secondary);
-    background: var(--color-background-primary);
-    color: var(--color-text-secondary);
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-
-  .filter-btn:hover {
-    background: var(--color-background-secondary);
-  }
-
-  .filter-btn.active {
-    background: #EEEDFE;
-    border-color: #AFA9EC;
-    color: #3C3489;
-  }
-
-  .topic-card {
-    background: var(--color-background-primary);
-    border: 0.5px solid var(--color-border-tertiary);
-    border-radius: var(--border-radius-lg);
-    margin-bottom: 10px;
-    overflow: hidden;
-  }
-
-  .topic-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 14px 16px;
-    cursor: pointer;
-    gap: 12px;
-    user-select: none;
-  }
-
-  .topic-header:hover {
-    background: var(--color-background-secondary);
-  }
-
-  .topic-left {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex: 1;
-    min-width: 0;
-  }
-
-  .topic-pill {
-    font-size: 11px;
-    padding: 3px 10px;
-    border-radius: 20px;
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-
-  .pill-pattern {
-    background: #EEEDFE;
-    color: #3C3489;
-  }
-
-  .pill-cloud {
-    background: #E1F5EE;
-    color: #085041;
-  }
-
-  .pill-principle {
-    background: #FAEEDA;
-    color: #633806;
-  }
-
-  .topic-name {
-    font-size: 15px;
-    font-weight: 500;
-    color: var(--color-text-primary);
-  }
-
-  .chevron {
-    font-size: 12px;
-    color: var(--color-text-tertiary);
-    transition: transform 0.2s;
-    flex-shrink: 0;
-  }
-
-  .chevron.open {
-    transform: rotate(180deg);
-  }
-
-  .topic-body {
-    display: none;
-    padding: 0 16px 16px;
-    border-top: 0.5px solid var(--color-border-tertiary);
-  }
-
-  .topic-body.open {
-    display: block;
-  }
-
-  .section {
-    margin-top: 14px;
-  }
-
-  .section-title {
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--color-text-secondary);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 8px;
-  }
-
-  .content-block {
-    font-size: 14px;
-    color: var(--color-text-primary);
-    line-height: 1.7;
-  }
-
-  .key-q {
-    font-size: 13px;
-    color: var(--color-text-primary);
-    padding: 6px 0;
-    border-bottom: 0.5px solid var(--color-border-tertiary);
-    line-height: 1.5;
-  }
-
-  .key-q:last-child {
-    border-bottom: none;
-  }
-
-  .key-q::before {
-    content: "Q  ";
-    color: var(--color-text-tertiary);
-    font-size: 11px;
-  }
-
-  pre {
-    background: var(--color-background-secondary);
-    border-radius: var(--border-radius-md);
-    padding: 10px 14px;
-    font-family: var(--font-mono);
-    font-size: 12px;
-    overflow-x: auto;
-    margin-top: 8px;
-    color: var(--color-text-primary);
-    border: 0.5px solid var(--color-border-tertiary);
-  }
-
-  .tip-box {
-    background: #E6F1FB;
-    border-radius: var(--border-radius-md);
-    padding: 10px 14px;
-    font-size: 13px;
-    color: #0C447C;
-    margin-top: 8px;
-    line-height: 1.6;
-  }
-
-  .compare-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-top: 8px;
-  }
-
-  .compare-card {
-    background: var(--color-background-secondary);
-    border-radius: var(--border-radius-md);
-    padding: 10px 12px;
-    font-size: 13px;
-    line-height: 1.6;
-    color: var(--color-text-primary);
-  }
-
-  .compare-card strong {
-    display: block;
-    font-weight: 500;
-    margin-bottom: 4px;
-    color: var(--color-text-secondary);
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-  }
-</style>
-
-<div class="wrap">
-  <div class="header">
-    <p style="font-size: 22px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 6px;">Final exam study
-      guide</p>
-    <p style="font-size: 14px; color: var(--color-text-secondary);">Click any topic to expand notes and key questions.
-    </p>
+    <div id="topics-list"></div>
   </div>
-
-  <div class="exam-info">
-    <div class="stat">
-      <div class="stat-label">T/F questions</div>
-      <div class="stat-value">8 × 2 pts</div>
-    </div>
-    <div class="stat">
-      <div class="stat-label">Multiple choice</div>
-      <div class="stat-value">11 × 4 pts</div>
-    </div>
-    <div class="stat">
-      <div class="stat-label">Essay questions</div>
-      <div class="stat-value">5 × 8 pts</div>
-    </div>
-    <div class="stat">
-      <div class="stat-label">Time</div>
-      <div class="stat-value">2–3 hours</div>
-    </div>
-    <div class="stat">
-      <div class="stat-label">Language</div>
-      <div class="stat-value">TypeScript</div>
-    </div>
-  </div>
-
-  <div class="filter-bar">
-    <button class="filter-btn active" onclick="filterTopics('all', this)">All topics</button>
-    <button class="filter-btn" onclick="filterTopics('pattern', this)">Design patterns</button>
-    <button class="filter-btn" onclick="filterTopics('cloud', this)">Cloud / AWS</button>
-    <button class="filter-btn" onclick="filterTopics('principle', this)">Principles</button>
-  </div>
-
-  <div id="topics-list"></div>
-</div>
+</body>
 
 <script>
   const topics = [

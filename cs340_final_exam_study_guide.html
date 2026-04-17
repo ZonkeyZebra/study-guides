@@ -1,0 +1,662 @@
+<h2 class="sr-only">Interactive study guide for the final exam covering design patterns, DynamoDB, SQS, and related
+  software engineering topics.</h2>
+
+<style>
+  :root {
+    --color-background-primary: light-dark(rgba(255, 255, 255, 1), rgba(48, 48, 46, 1));
+    --color-background-secondary: light-dark(rgba(245, 244, 237, 1), rgba(38, 38, 36, 1));
+    --color-background-tertiary: light-dark(rgba(250, 249, 245, 1), rgba(20, 20, 19, 1));
+    --color-background-inverse: light-dark(rgba(20, 20, 19, 1), rgba(250, 249, 245, 1));
+    --color-background-ghost: light-dark(rgba(255, 255, 255, 0), rgba(48, 48, 46, 0));
+    --color-background-info: light-dark(rgba(214, 228, 246, 1), rgba(37, 62, 95, 1));
+    --color-background-danger: light-dark(rgba(247, 236, 236, 1), rgba(96, 42, 40, 1));
+    --color-background-success: light-dark(rgba(233, 241, 220, 1), rgba(27, 70, 20, 1));
+    --color-background-warning: light-dark(rgba(246, 238, 223, 1), rgba(72, 58, 15, 1));
+    --color-background-disabled: light-dark(rgba(255, 255, 255, 0.5), rgba(48, 48, 46, 0.5));
+    --color-text-primary: light-dark(rgba(20, 20, 19, 1), rgba(250, 249, 245, 1));
+    --color-text-secondary: light-dark(rgba(61, 61, 58, 1), rgba(194, 192, 182, 1));
+    --color-text-tertiary: light-dark(rgba(115, 114, 108, 1), rgba(156, 154, 146, 1));
+    --color-text-inverse: light-dark(rgba(255, 255, 255, 1), rgba(20, 20, 19, 1));
+    --color-text-info: light-dark(rgba(50, 102, 173, 1), rgba(128, 170, 221, 1));
+    --color-text-danger: light-dark(rgba(127, 44, 40, 1), rgba(238, 136, 132, 1));
+    --color-text-success: light-dark(rgba(38, 91, 25, 1), rgba(122, 185, 72, 1));
+    --color-text-warning: light-dark(rgba(90, 72, 21, 1), rgba(209, 160, 65, 1));
+    --color-text-disabled: light-dark(rgba(20, 20, 19, 0.5), rgba(250, 249, 245, 0.5));
+    --color-text-ghost: light-dark(rgba(115, 114, 108, 0.5), rgba(156, 154, 146, 0.5));
+    --color-border-primary: light-dark(rgba(31, 30, 29, 0.4), rgba(222, 220, 209, 0.4));
+    --color-border-secondary: light-dark(rgba(31, 30, 29, 0.3), rgba(222, 220, 209, 0.3));
+    --color-border-tertiary: light-dark(rgba(31, 30, 29, 0.15), rgba(222, 220, 209, 0.15));
+    --color-border-inverse: light-dark(rgba(255, 255, 255, 0.3), rgba(20, 20, 19, 0.15));
+    --color-border-ghost: light-dark(rgba(31, 30, 29, 0), rgba(222, 220, 209, 0));
+    --color-border-info: light-dark(rgba(70, 130, 213, 1), rgba(70, 130, 213, 1));
+    --color-border-danger: light-dark(rgba(167, 61, 57, 1), rgba(205, 92, 88, 1));
+    --color-border-success: light-dark(rgba(67, 116, 38, 1), rgba(89, 145, 48, 1));
+    --color-border-warning: light-dark(rgba(128, 92, 31, 1), rgba(168, 120, 41, 1));
+    --color-border-disabled: light-dark(rgba(31, 30, 29, 0.1), rgba(222, 220, 209, 0.1));
+    --color-ring-primary: light-dark(rgba(20, 20, 19, 0.7), rgba(250, 249, 245, 0.7));
+    --color-ring-secondary: light-dark(rgba(61, 61, 58, 0.7), rgba(194, 192, 182, 0.7));
+    --color-ring-inverse: light-dark(rgba(255, 255, 255, 0.7), rgba(20, 20, 19, 0.7));
+    --color-ring-info: light-dark(rgba(50, 102, 173, 0.5), rgba(128, 170, 221, 0.5));
+    --color-ring-danger: light-dark(rgba(167, 61, 57, 0.5), rgba(205, 92, 88, 0.5));
+    --color-ring-success: light-dark(rgba(67, 116, 38, 0.5), rgba(89, 145, 48, 0.5));
+    --color-ring-warning: light-dark(rgba(128, 92, 31, 0.5), rgba(168, 120, 41, 0.5));
+    --font-sans: Anthropic Sans, sans-serif;
+    --font-mono: ui-monospace, monospace;
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+    --font-text-xs-size: 12px;
+    --font-text-sm-size: 14px;
+    --font-text-md-size: 16px;
+    --font-text-lg-size: 20px;
+    --font-heading-xs-size: 12px;
+    --font-heading-sm-size: 14px;
+    --font-heading-md-size: 16px;
+    --font-heading-lg-size: 20px;
+    --font-heading-xl-size: 24px;
+    --font-heading-2xl-size: 28px;
+    --font-heading-3xl-size: 36px;
+    --font-text-xs-line-height: 1.4;
+    --font-text-sm-line-height: 1.4;
+    --font-text-md-line-height: 1.4;
+    --font-text-lg-line-height: 1.25;
+    --font-heading-xs-line-height: 1.4;
+    --font-heading-sm-line-height: 1.4;
+    --font-heading-md-line-height: 1.4;
+    --font-heading-lg-line-height: 1.25;
+    --font-heading-xl-line-height: 1.25;
+    --font-heading-2xl-line-height: 1.1;
+    --font-heading-3xl-line-height: 1;
+    --border-radius-xs: 4px;
+    --border-radius-sm: 6px;
+    --border-radius-md: 8px;
+    --border-radius-lg: 10px;
+    --border-radius-xl: 12px;
+    --border-radius-full: 9999px;
+    --border-width-regular: 0.5px;
+    --shadow-hairline: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+    color-scheme: light dark;
+    --font-serif: "Anthropic Serif", Georgia, "Times New Roman", serif;
+    --p: var(--color-text-primary);
+    --s: var(--color-text-secondary);
+    --t: var(--color-text-tertiary);
+    --bg2: var(--color-background-secondary);
+    --b: var(--color-border-secondary);
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 5px;
+  }
+
+  body {
+    font-family: var(--font-sans);
+  }
+
+  .wrap {
+    padding: 1rem 0 2rem;
+  }
+
+  .header {
+    margin-bottom: 1.5rem;
+  }
+
+  .exam-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+    margin-bottom: 1.5rem;
+  }
+
+  .stat {
+    background: var(--color-background-secondary);
+    border-radius: var(--border-radius-md);
+    padding: 0.75rem 1rem;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    margin-bottom: 4px;
+  }
+
+  .stat-value {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+  }
+
+  .filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 1.25rem;
+  }
+
+  .filter-btn {
+    font-size: 13px;
+    padding: 5px 14px;
+    border-radius: 20px;
+    border: 0.5px solid var(--color-border-secondary);
+    background: var(--color-background-primary);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .filter-btn:hover {
+    background: var(--color-background-secondary);
+  }
+
+  .filter-btn.active {
+    background: #EEEDFE;
+    border-color: #AFA9EC;
+    color: #3C3489;
+  }
+
+  .topic-card {
+    background: var(--color-background-primary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-lg);
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+
+  .topic-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    cursor: pointer;
+    gap: 12px;
+    user-select: none;
+  }
+
+  .topic-header:hover {
+    background: var(--color-background-secondary);
+  }
+
+  .topic-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .topic-pill {
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .pill-pattern {
+    background: #EEEDFE;
+    color: #3C3489;
+  }
+
+  .pill-cloud {
+    background: #E1F5EE;
+    color: #085041;
+  }
+
+  .pill-principle {
+    background: #FAEEDA;
+    color: #633806;
+  }
+
+  .topic-name {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+  }
+
+  .chevron {
+    font-size: 12px;
+    color: var(--color-text-tertiary);
+    transition: transform 0.2s;
+    flex-shrink: 0;
+  }
+
+  .chevron.open {
+    transform: rotate(180deg);
+  }
+
+  .topic-body {
+    display: none;
+    padding: 0 16px 16px;
+    border-top: 0.5px solid var(--color-border-tertiary);
+  }
+
+  .topic-body.open {
+    display: block;
+  }
+
+  .section {
+    margin-top: 14px;
+  }
+
+  .section-title {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+  }
+
+  .content-block {
+    font-size: 14px;
+    color: var(--color-text-primary);
+    line-height: 1.7;
+  }
+
+  .key-q {
+    font-size: 13px;
+    color: var(--color-text-primary);
+    padding: 6px 0;
+    border-bottom: 0.5px solid var(--color-border-tertiary);
+    line-height: 1.5;
+  }
+
+  .key-q:last-child {
+    border-bottom: none;
+  }
+
+  .key-q::before {
+    content: "Q  ";
+    color: var(--color-text-tertiary);
+    font-size: 11px;
+  }
+
+  pre {
+    background: var(--color-background-secondary);
+    border-radius: var(--border-radius-md);
+    padding: 10px 14px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    overflow-x: auto;
+    margin-top: 8px;
+    color: var(--color-text-primary);
+    border: 0.5px solid var(--color-border-tertiary);
+  }
+
+  .tip-box {
+    background: #E6F1FB;
+    border-radius: var(--border-radius-md);
+    padding: 10px 14px;
+    font-size: 13px;
+    color: #0C447C;
+    margin-top: 8px;
+    line-height: 1.6;
+  }
+
+  .compare-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 8px;
+  }
+
+  .compare-card {
+    background: var(--color-background-secondary);
+    border-radius: var(--border-radius-md);
+    padding: 10px 12px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--color-text-primary);
+  }
+
+  .compare-card strong {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 4px;
+    color: var(--color-text-secondary);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+</style>
+
+<div class="wrap">
+  <div class="header">
+    <p style="font-size: 22px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 6px;">Final exam study
+      guide</p>
+    <p style="font-size: 14px; color: var(--color-text-secondary);">Click any topic to expand notes and key questions.
+    </p>
+  </div>
+
+  <div class="exam-info">
+    <div class="stat">
+      <div class="stat-label">T/F questions</div>
+      <div class="stat-value">8 × 2 pts</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Multiple choice</div>
+      <div class="stat-value">11 × 4 pts</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Essay questions</div>
+      <div class="stat-value">5 × 8 pts</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Time</div>
+      <div class="stat-value">2–3 hours</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Language</div>
+      <div class="stat-value">TypeScript</div>
+    </div>
+  </div>
+
+  <div class="filter-bar">
+    <button class="filter-btn active" onclick="filterTopics('all', this)">All topics</button>
+    <button class="filter-btn" onclick="filterTopics('pattern', this)">Design patterns</button>
+    <button class="filter-btn" onclick="filterTopics('cloud', this)">Cloud / AWS</button>
+    <button class="filter-btn" onclick="filterTopics('principle', this)">Principles</button>
+  </div>
+
+  <div id="topics-list"></div>
+</div>
+
+<script>
+  const topics = [
+    {
+      id: "dip",
+      name: "Dependency inversion principle",
+      tag: "principle",
+      summary: "High-level modules should not depend on low-level modules. Both should depend on abstractions. Abstractions should not depend on details — details depend on abstractions.",
+      keyPoints: [
+        "Reduces coupling between components",
+        "Makes code easier to test (inject mocks via interface)",
+        "Enables swapping implementations without changing calling code",
+        "Often implemented via constructor injection or factory",
+        "Use interfaces, not concrete classes"
+      ],
+      questions: [],
+      code: `interface Database {\n\tsave(data: string): void;\n}\n\nclass DynamoDB implements Database {\n\tsave(data: string) {}\n}\n\nclass Service {\n\tconstructor(private db: Database) {}\n}`,
+      whyImportant: [
+        "Makes code testable",
+        "Swappable implementations"
+      ]
+    },
+    {
+      id: "dynamo",
+      name: "DynamoDB",
+      tag: "cloud",
+      summary: "A fully managed NoSQL key-value and document database. Unlike relational DBs, there are no joins, no fixed schema, and no SQL — data is accessed by keys.",
+      keyPoints: [
+        "No joins, no schema — horizontal scaling by partition",
+        "Every query MUST include the partition key (used to route to the correct node, determines where data is stored, and enable fast lookups)",
+        "Sort key enables range queries within a partition and is optional (e.g. by date, UserID (partition) + Timestamp (sort))",
+        "Global Secondary Index (GSI) lets you query on non-primary attributes (e.g. Query by email instead of userId)"
+      ],
+      questions: [
+        "How does DynamoDB differ from a relational database?",
+        "Why must a DynamoDB query include a value for the partition key?",
+        "What does a sort key do and when do you need one?",
+        "What is the purpose of Global Secondary Indexes?"
+      ]
+    },
+    {
+      id: "dao",
+      name: "Data access object (DAO) pattern",
+      tag: "pattern",
+      summary: "Separates data persistence logic from business logic. Your service/domain code talks to a DAO interface; the concrete implementation talks to the database. Swapping DynamoDB for SQL only requires a new implementation.",
+      keyPoints: [
+        "Interface defines CRUD methods (e.g. getUserById, saveUser)",
+        "Concrete class handles DB-specific logic (DynamoDB, SQL, in-memory)",
+        "Business logic stays clean and testable — inject a mock DAO in tests",
+        "Used extensively in your project for each data entity"
+      ],
+      questions: [
+        "How have you used the DAO pattern in your project? What did your interfaces look like?"
+      ],
+      code: `interface UserDAO {\n\tgetUserById(id: string): Promise<User>;\n\tsaveUser(user: User): Promise<void>;\n}\n\nclass DynamoDBUserDAO implements UserDAO {\n\tasync getUserById(id: string): Promise<User> {\n\t\t// DynamoDB-specific query logic\n\t}\n\n\tasync saveUser(user: User): Promise<void> {\n\t\t// DynamoDB-specific save logic\n\t}\n}`,
+      whyImportant: [
+        "Decouples business logic from persistence",
+        "Enables swapping databases with minimal code changes (swap DB easily)",
+        "Improves testability by allowing mock implementations"
+      ]
+    },
+    {
+      id: "dto",
+      name: "Data transfer object (DTO) pattern",
+      tag: "pattern",
+      summary: "A simple object used to carry data between layers or services. DTOs have no behavior — just fields. They decouple your internal domain model from what is exposed externally (e.g., API responses). Its main purpose is to transfer data between layers/services.",
+      keyPoints: [
+        "Flat, serializable objects — no methods",
+        "Prevents leaking internal model details to clients",
+        "Often used at API boundaries (request/response bodies)",
+        "Conversion between domain object ↔ DTO is done in a mapper"
+      ],
+      questions: [],
+      code: `class UserDTO {\n\tname: string;\n\talias: string;\n}`,
+      whyImportant: [
+        "Decouples internal model from external representation",
+        "Prevents tight coupling between layers/services",
+        "Prevents leaking internal implementation details to clients",
+        "Simplifies API responses"
+      ]
+    },
+    {
+      id: "abstract-ext",
+      name: "Abstracting external dependencies",
+      tag: "principle",
+      summary: "Wrap third-party libraries and services behind your own interfaces. Your code depends on the abstraction, not the vendor SDK directly. If the SDK changes, only the wrapper changes.",
+      keyPoints: [
+        "Wrapping AWS SDK behind a custom interface is a classic example",
+        "Enables mocking external services in unit tests",
+        "Combined with DIP and DAO for testable architecture",
+        "Abstract Factory is one mechanism to achieve this at construction time"
+      ],
+      questions: []
+    },
+    {
+      id: "testability",
+      name: "Designing for testability / abstract factory",
+      tag: "pattern",
+      summary: "Abstract Factory creates families of related objects without specifying their concrete classes. Used to inject test doubles at construction time, keeping production and test code cleanly separated.",
+      keyPoints: [
+        "Factory interface produces sets of related objects (e.g., DAOs, clients)",
+        "RealFactory returns real AWS clients; TestFactory returns mocks",
+        "Application code only knows the factory interface",
+        "Enables full-stack integration tests without real cloud resources"
+      ],
+      questions: []
+    },
+    {
+      id: "sqs",
+      name: "Asynchronous messaging / SQS",
+      tag: "cloud",
+      summary: "SQS decouples producers from consumers. A sender puts a message on the queue; the receiver processes it independently. Used in M4 to decouple services and handle load spikes. It can handle heavy workloads asynchronously.",
+      keyPoints: [
+        "Standard queue: at-least-once delivery, best-effort ordering — highest throughput, possible duplicates",
+        "FIFO queue: exactly-once delivery, strict ordering — lower throughput, no duplicates",
+        "Key config: visibility timeout, message retention, dead-letter queue, delay seconds",
+        "Dead-letter queue holds messages that fail processing repeatedly"
+      ],
+      questions: [
+        "How did you use SQS in your M4 design? Why?",
+        "What are the different queue types and why would you choose one over the other?",
+        "What are the different configuration options for an SQS queue?"
+      ]
+    },
+    {
+      id: "inheritance-delegation",
+      name: "Inheritance vs delegation / composition",
+      tag: "principle",
+      summary: "Favor composition over inheritance. Inheritance couples subclass to superclass and is hard to change. Delegation wraps an object and forwards calls — more flexible.",
+      keyPoints: [
+        "Proxy, Strategy, Decorator all use composition (hold a reference, delegate calls)",
+        "Inheritance (extends): reuse via 'is-a'; pros: code reuse; cons: tight coupling, fragile base class problem, hard to change",
+        "Composition (delegation): reuse via 'has-a'; pros: flexible, easy to modify and swap behavior at runtime",
+        "Strategy swaps algorithm at runtime — impossible with pure inheritance",
+        "Used in Patterns: Proxy (wraps object), Strategy (interchanges behaviors), Decorator (adds behavior dynamically)"
+      ],
+      questions: [
+        "Explain how object composition/delegation is used in the proxy, strategy, and decorator patterns.",
+        "What are the relative advantages and disadvantages of extends vs composition?"
+      ]
+    },
+    {
+      id: "facade",
+      name: "Façade pattern",
+      tag: "pattern",
+      summary: "Provides a simplified interface to a complex subsystem. Clients call the façade; the façade coordinates multiple subsystem classes. Reduces coupling between client and internals. The intent is to simplify complex systems.",
+      keyPoints: [
+        "Intent: simplify — hide complexity behind a single entry point",
+        "Does NOT prevent direct access to subsystem if needed",
+        "Common example: a service class that wraps multiple DAOs and external calls",
+        "Similarity to Proxy: both sit between client and something else"
+      ],
+      questions: [
+        "How are the Façade and Proxy patterns similar?",
+        "How are they different?"
+      ],
+      code: `class API {\n\tgetUserProfile() {\n\t// calls multiple services internally\n\t}\n}`,
+    },
+    {
+      id: "proxy",
+      name: "Proxy pattern",
+      tag: "pattern",
+      summary: "A surrogate that controls access to another object. The proxy and the real object share the same interface. Used for caching, access control, logging, lazy initialization.",
+      keyPoints: [
+        "Same interface as the real subject — client can't tell the difference",
+        "Types: virtual (lazy load), protection (access control), caching, remote",
+        "Uses composition: proxy holds a reference to the real object",
+        "Façade vs Proxy: Façade simplifies and hides complexity (different/new interface), Proxy controls access and adds behavior (same interface)",
+        "Uses: lazy loading, caching, security"
+      ],
+      questions: [
+        "How are the Façade and Proxy patterns similar?",
+        "How are they different?"
+      ]
+    },
+    {
+      id: "strategy",
+      name: "Strategy pattern",
+      tag: "pattern",
+      summary: "Defines a family of algorithms, encapsulates each, and makes them interchangeable at runtime. The context holds a reference to a strategy and delegates the algorithm to it.",
+      keyPoints: [
+        "Behavior varies at runtime — swap strategies without changing context",
+        "Uses composition: context has-a strategy",
+        "Vs Template Method: Strategy uses delegation/composition (different object), Template Method uses inheritance (different subclass overrides steps). Strategy is more flexible (at runtime), whereas Template only changes at compile-time. Strategy replaces entire algorithm, Template only overrides steps of an algorithm.",
+        "Prefer Strategy when you want runtime flexibility; Template Method when steps are fixed"
+      ],
+      questions: [
+        "How would you decide between Strategy and Template Method for the same problem?"
+      ],
+      code: `interface SortStrategy {\n\tsort(data: number[]): number[];\n}\n\nclass QuickSortStrategy implements SortStrategy {\n\tsort(data: number[]): number[] {\n\t\t// quicksort implementation\n\t}\n}\n\nclass MergeSortStrategy implements SortStrategy {\n\tsort(data: number[]): number[] {\n\t\t// mergesort implementation\n\t}\n}\n\nclass Sorter {\n\tconstructor(private strategy: SortStrategy) {}\n\n\tsort(data: number[]): number[] {\n\t\treturn this.strategy.sort(data);\n\t}\n}`,
+    },
+    {
+      id: "adapter",
+      name: "Adapter pattern",
+      tag: "pattern",
+      summary: "Converts the interface of a class into another interface the client expects. Wraps an existing class so it works with code that expects a different interface. Make incompatible interfaces work together.",
+      keyPoints: [
+        "Intent: make incompatible interfaces compatible",
+        "Adaptee: the existing class (ArrayList)",
+        "Target: the expected interface (Stack<T>)",
+        "Adapter wraps adaptee and implements target — uses composition"
+      ],
+      questions: [],
+      code: `class ArrayListStack<T> implements Stack<T> {\n  private list: T[] = [];\n\n  push(t: T): void {\n    this.list.push(t);\n  }\n\n  pop(): T {\n    if (this.list.length === 0) throw new Error("Empty");\n    return this.list.pop()!;\n  }\n}`
+    },
+    {
+      id: "command",
+      name: "Command pattern",
+      tag: "pattern",
+      summary: "Encapsulates a request as an object with an execute() method. Decouples sender from receiver. Enables queuing, logging, undo/redo, and macro commands.",
+      keyPoints: [
+        "Command interface: execute() (and optionally undo())",
+        "ConcreteCommand holds receiver reference and calls its method",
+        "Invoker stores and triggers commands without knowing the details",
+        "Beyond undo/redo: job queues, transaction scripts, batch operations, audit logs",
+        "Uses: undo/redo, task queues, logging, remote control systems",
+        "Structure: Command interface, Concrete commands, Receiver, Invoker"
+      ],
+      questions: [
+        "What are some uses beyond undo/redo stacks? What would be the elements of such a solution?"
+      ]
+    }
+  ];
+
+  function filterTopics(tag, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.topic-card').forEach(card => {
+      const t = card.dataset.tag;
+      card.style.display = (tag === 'all' || t === tag) ? '' : 'none';
+    });
+  }
+
+  function toggle(id) {
+    const body = document.getElementById('body-' + id);
+    const chev = document.getElementById('chev-' + id);
+    const isOpen = body.classList.contains('open');
+    body.classList.toggle('open', !isOpen);
+    chev.classList.toggle('open', !isOpen);
+  }
+
+  function tagLabel(tag) {
+    if (tag === 'pattern') return ['pill-pattern', 'Design pattern'];
+    if (tag === 'cloud') return ['pill-cloud', 'AWS / Cloud'];
+    return ['pill-principle', 'Principle'];
+  }
+
+  const list = document.getElementById('topics-list');
+  topics.forEach(t => {
+    const [pillClass, pillText] = tagLabel(t.tag);
+    const questionsHtml = t.questions.length ? `
+    <div class="section">
+      <div class="section-title">Key exam questions</div>
+      ${t.questions.map(q => `<div class="key-q">${q}</div>`).join('')}
+    </div>` : '';
+    const pointsHtml = t.keyPoints.length ? `
+    <div class="section">
+      <div class="section-title">Key points</div>
+      <div class="content-block">${t.keyPoints.map((p, i) => `<div style="padding:5px 0;border-bottom:0.5px solid var(--color-border-tertiary);font-size:14px;line-height:1.6;">${i + 1}. ${p}</div>`).join('')}</div>
+    </div>` : '';
+    const codeHtml = t.code ? `
+    <div class="section">
+      <div class="section-title">TypeScript example</div>
+      <pre>${t.code}</pre>
+    </div>` : '';
+    const whyImportantHtml = t.whyImportant && t.whyImportant.length ? `
+    <div class="section">
+      <div class="section-title">Why it's important</div>
+      <div class="content-block">${t.whyImportant.map(p => `<div style="padding:5px 0;border-bottom:0.5px solid var(--color-border-tertiary);font-size:14px;line-height:1.6;">- ${p}</div>`).join('')}</div>
+    </div>` : '';
+
+    const card = document.createElement('div');
+    card.className = 'topic-card';
+    card.dataset.tag = t.tag;
+    card.innerHTML = `
+    <div class="topic-header" onclick="toggle('${t.id}')">
+      <div class="topic-left">
+        <span class="topic-pill ${pillClass}">${pillText}</span>
+        <span class="topic-name">${t.name}</span>
+      </div>
+      <span class="chevron" id="chev-${t.id}">▼</span>
+    </div>
+    <div class="topic-body" id="body-${t.id}">
+      <div class="section">
+        <div class="section-title">Summary</div>
+        <div class="content-block">${t.summary}</div>
+      </div>
+      ${pointsHtml}
+      ${questionsHtml}
+      ${codeHtml}
+      ${whyImportantHtml}
+    </div>`;
+    list.appendChild(card);
+  });
+</script>

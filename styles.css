@@ -532,3 +532,53 @@ pre {
     font-size: 12px;
     color: var(--color-text-tertiary)
 }
+
+/* Base node styling */
+.node rect {
+    fill: var(--color-background-primary);
+    stroke: var(--color-border-primary);
+    stroke-width: 1;
+}
+
+/* Text inside nodes */
+.node .th {
+    font-size: 13px;
+    font-weight: 600;
+    fill: black;
+}
+
+.node .ts {
+    font-size: 11px;
+    fill: darkslategray;
+}
+
+/* Color variants */
+.c-amber rect {
+    fill: #FFF4E5;
+    stroke: #EF9F27;
+}
+
+.c-purple rect {
+    fill: #EEEDFE;
+    stroke: #534AB7;
+}
+
+.c-teal rect {
+    fill: #E1F5EE;
+    stroke: #0F6E56;
+}
+
+.c-coral rect {
+    fill: #FFE8E5;
+    stroke: #F0997B;
+}
+
+.c-blue rect {
+    fill: #E6F1FB;
+    stroke: #85B7EB;
+}
+
+.c-gray rect {
+    fill: #F4F3EF;
+    stroke: #B4B2A9;
+}

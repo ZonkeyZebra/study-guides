@@ -1,0 +1,341 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.wrap{padding:1rem 0}
+.cats{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1rem;align-items:center}
+.cat-label{font-size:11px;color:var(--color-text-tertiary);font-weight:500;letter-spacing:.05em;text-transform:uppercase;padding:0 4px 0 8px;align-self:center}
+.cat-label:first-child{padding-left:0}
+.tab{padding:5px 13px;font-size:12px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);cursor:pointer;background:var(--color-background-primary);color:var(--color-text-secondary);transition:all .15s;font-family:var(--font-sans)}
+.tab:hover{background:var(--color-background-secondary)}
+.tab.active{background:var(--color-background-secondary);color:var(--color-text-primary);border-color:var(--color-border-primary);font-weight:500}
+.board{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;min-height:320px}
+.info{margin-top:.75rem;font-size:13px;color:var(--color-text-secondary);line-height:1.65}
+.info strong{color:var(--color-text-primary);font-weight:500}
+.uses{display:block;margin-top:.35rem;font-size:12px;color:var(--color-text-tertiary)}
+</style>
+
+<div class="wrap">
+<h2 class="sr-only">UML diagrams for CS 340 design patterns</h2>
+<div class="cats" id="cats"></div>
+<div class="board" id="board"></div>
+<div class="info" id="info"></div>
+</div>
+
+<script>
+const P=[
+{name:"Facade",cat:"Structural",
+desc:"<strong>Facade</strong> provides a simplified interface to a complex subsystem, hiding its internal complexity from clients.",
+uses:"API gateways, framework wrappers, library interfaces",
+svg:`<svg width="100%" viewBox="0 0 680 370" role="img" xmlns="http://www.w3.org/2000/svg"><title>Facade UML</title><desc>Client calls Facade which delegates to subsystem classes</desc>
+<defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<g class="node c-amber"><rect x="30" y="150" width="100" height="44" rx="6" stroke-width="0.5"/><text class="th" x="80" y="172" text-anchor="middle" dominant-baseline="central">Client</text></g>
+<g class="node c-purple"><rect x="210" y="130" width="170" height="60" rx="6" stroke-width="0.5"/><text class="th" x="295" y="153" text-anchor="middle" dominant-baseline="central">Facade</text><text class="ts" x="295" y="175" text-anchor="middle" dominant-baseline="central">+ operation(): void</text></g>
+<line x1="130" y1="172" x2="208" y2="172" stroke="#BA7517" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#ar)"/>
+<g class="node c-teal"><rect x="460" y="40" width="180" height="56" rx="6" stroke-width="0.5"/><text class="th" x="550" y="62" text-anchor="middle" dominant-baseline="central">SubsystemA</text><text class="ts" x="550" y="80" text-anchor="middle" dominant-baseline="central">+ operationA(): void</text></g>
+<g class="node c-teal"><rect x="460" y="155" width="180" height="56" rx="6" stroke-width="0.5"/><text class="th" x="550" y="177" text-anchor="middle" dominant-baseline="central">SubsystemB</text><text class="ts" x="550" y="195" text-anchor="middle" dominant-baseline="central">+ operationB(): void</text></g>
+<g class="node c-teal"><rect x="460" y="270" width="180" height="56" rx="6" stroke-width="0.5"/><text class="th" x="550" y="292" text-anchor="middle" dominant-baseline="central">SubsystemC</text><text class="ts" x="550" y="310" text-anchor="middle" dominant-baseline="central">+ operationC(): void</text></g>
+<line x1="380" y1="152" x2="458" y2="68" stroke="#0F6E56" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#ar)"/>
+<line x1="380" y1="172" x2="458" y2="183" stroke="#0F6E56" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#ar)"/>
+<line x1="380" y1="188" x2="458" y2="295" stroke="#0F6E56" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#ar)"/>
+</svg>`},
+
+{name:"Proxy",cat:"Structural",
+desc:"<strong>Proxy</strong> provides a surrogate that controls access to another object — adding lazy loading, caching, access control, or logging.",
+uses:"Virtual proxies, security proxies, remote proxies, caching layers",
+svg:`<svg width="100%" viewBox="0 0 680 340" role="img" xmlns="http://www.w3.org/2000/svg"><title>Proxy UML</title><desc>Client uses Subject interface; Proxy and RealSubject both implement it; Proxy wraps RealSubject</desc>
+<defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+<marker id="tri" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M9 1L1 5L9 9" fill="none" stroke="context-stroke" stroke-width="1.5"/></marker></defs>
+<g class="node c-amber"><rect x="20" y="140" width="100" height="44" rx="6" stroke-width="0.5"/><text class="th" x="70" y="162" text-anchor="middle" dominant-baseline="central">Client</text></g>
+<g class="node c-purple"><rect x="220" y="60" width="220" height="56" rx="6" stroke-width="0.5"/><text class="th" x="330" y="82" text-anchor="middle" dominant-baseline="central">«interface» Subject</text><text class="ts" x="330" y="100" text-anchor="middle" dominant-baseline="central">+ request(): void</text></g>
+<g class="node c-teal"><rect x="130" y="220" width="220" height="72" rx="6" stroke-width="0.5"/><text class="th" x="240" y="244" text-anchor="middle" dominant-baseline="central">Proxy</text><text class="ts" x="240" y="262" text-anchor="middle" dominant-baseline="central">- realSubject: RealSubject</text><text class="ts" x="240" y="278" text-anchor="middle" dominant-baseline="central">+ request(): void</text></g>
+<g class="node c-teal"><rect x="420" y="220" width="210" height="72" rx="6" stroke-width="0.5"/><text class="th" x="525" y="244" text-anchor="middle" dominant-baseline="central">RealSubject</text><text class="ts" x="525" y="262" text-anchor="middle" dominant-baseline="central">+ request(): void</text><text class="ts" x="525" y="278" text-anchor="middle" dominant-baseline="central">// actual work here</text></g>
+<line x1="120" y1="162" x2="218" y2="100" stroke="#888780" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#ar)"/>
+<line x1="240" y1="220" x2="300" y2="116" stroke="#534AB7" stroke-width="1" marker-end="url(#tri)"/>
+<line x1="525" y1="220" x2="420" y2="116" stroke="#534AB7" stroke-width="1" marker-end="url(#tri)"/>
+<line x1="350" y1="256" x2="418" y2="256" stroke="#0F6E56" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#ar)"/>
+<text class="ts" x="383" y="248" text-anchor="middle" fill="#0F6E56">delegates</text>
+</svg>`},
+
+{name:"Template Method",cat:"Behavioral",
+desc:"<strong>Template Method</strong> defines the skeleton of an algorithm in a base class, deferring some steps to subclasses without changing the overall structure.",
+uses:"Data parsers, report generators, game loops, test frameworks",
+svg:`<svg width="100%" viewBox="0 0 680 380" role="img" xmlns="http://www.w3.org/2000/svg"><title>Template Method UML</title><desc>Abstract class defines templateMethod calling abstract primitives; concrete subclasses implement the primitives</desc>
+<defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+<marker id="tri" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M9 1L1 5L9 9" fill="none" stroke="context-stroke" stroke-width="1.5"/></marker></defs>
+<g class="node c-purple"><rect x="190" y="20" width="300" height="140" rx="6" stroke-width="0.5"/>
+<text class="th" x="340" y="44" text-anchor="middle" dominant-baseline="central">«abstract» AbstractClass</text>
+<line x1="190" y1="58" x2="490" y2="58" stroke="#AFA9EC" stroke-width="0.5"/>
+<text class="ts" x="202" y="76" dominant-baseline="central">+ templateMethod(): void</text>
+<text class="ts" x="202" y="96" dominant-baseline="central">// calls step1, step2, hook</text>
+<line x1="190" y1="108" x2="490" y2="108" stroke="#AFA9EC" stroke-width="0.5"/>
+<text class="ts" x="202" y="126" dominant-baseline="central" font-style="italic">+ step1(): void  «abstract»</text>
+<text class="ts" x="202" y="146" dominant-baseline="central" font-style="italic">+ step2(): void  «abstract»</text>
+</g>
+<g class="node c-teal"><rect x="80" y="260" width="230" height="90" rx="6" stroke-width="0.5"/>
+<text class="th" x="195" y="284" text-anchor="middle" dominant-baseline="central">ConcreteClassA</text>
+<line x1="80" y1="298" x2="310" y2="298" stroke="#5DCAA5" stroke-width="0.5"/>
+<text class="ts" x="92" y="316" dominant-baseline="central">+ step1(): void</text>
+<text class="ts" x="92" y="336" dominant-baseline="central">+ step2(): void</text>
+</g>
+<g class="node c-teal"><rect x="370" y="260" width="230" height="90" rx="6" stroke-width="0.5"/>
+<text class="th" x="485" y="284" text-anchor="middle" dominant-baseline="central">ConcreteClassB</text>
+<line x1="370" y1="298" x2="600" y2="298" stroke="#5DCAA5" stroke-width="0.5"/>
+<text class="ts" x="382" y="316" dominant-baseline="central">+ step1(): void</text>
+<text class="ts" x="382" y="336" dominant-baseline="central">+ step2(): void</text>
+</g>
+<line x1="195" y1="260" x2="290" y2="160" stroke="#534AB7" stroke-width="1" marker-end="url(#tri)"/>
+<line x1="485" y1="260" x2="390" y2="160" stroke="#534AB7" stroke-width="1" marker-end="url(#tri)"/>
+</svg>`},
+
+{name:"Observer",cat:"Behavioral",
+desc:"<strong>Observer</strong> defines a one-to-many dependency so that when a subject changes state, all registered observers are notified automatically.",
+uses:"Event systems, UI data binding, message brokers, real-time feeds",
+svg:`<svg width="100%" viewBox="0 0 680 360" role="img" xmlns="http://www.w3.org/2000/svg"><title>Observer UML</title><desc>ConcretePublisher notifies ConcreteObserver instances via the Observer interface</desc>
+<defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+<marker id="tri" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M9 1L1 5L9 9" fill="none" stroke="context-stroke" stroke-width="1.5"/></marker></defs>
+<g class="node c-purple"><rect x="30" y="30" width="250" height="100" rx="6" stroke-width="0.5"/>
+<text class="th" x="155" y="54" text-anchor="middle" dominant-baseline="central">«interface» Publisher</text>
+<line x1="30" y1="68" x2="280" y2="68" stroke="#AFA9EC" stroke-width="0.5"/>
+<text class="ts" x="42" y="86" dominant-baseline="central" font-style="italic">+ subscribe(o: Observer)</text>
+<text class="ts" x="42" y="106" dominant-baseline="central" font-style="italic">+ unsubscribe(o: Observer)</text>
+<text class="ts" x="42" y="122" dominant-baseline="central" font-style="italic">+ notifyObservers()</text>
+</g>
+<g class="node c-teal"><rect x="30" y="220" width="250" height="100" rx="6" stroke-width="0.5"/>
+<text class="th" x="155" y="244" text-anchor="middle" dominant-baseline="central">ConcretePublisher</text>
+<line x1="30" y1="258" x2="280" y2="258" stroke="#5DCAA5" stroke-width="0.5"/>
+<text class="ts" x="42" y="276" dominant-baseline="central">- observers: Observer[]</text>
+<text class="ts" x="42" y="296" dominant-baseline="central">- state: any</text>
+<text class="ts" x="42" y="312" dominant-baseline="central">+ notifyObservers()</text>
+</g>
+<line x1="155" y1="220" x2="155" y2="130" stroke="#534AB7" stroke-width="1" marker-end="url(#tri)"/>
+<g class="node c-purple"><rect x="400" y="30" width="240" height="80" rx="6" stroke-width="0.5"/>
+<text class="th" x="520" y="54" text-anchor="middle" dominant-baseline="central">«interface» Observer</text>
+<line x1="400" y1="68" x2="640" y2="68" stroke="#AFA9EC" stroke-width="0.5"/>
+<text class="ts" x="412" y="86" dominant-baseline="central" font-style="italic">+ update(data: any): void</text>
+<text class="ts" x="412" y="104" dominant-baseline="central" font-style="italic">+ getState(): any</text>
+</g>
+<g class="node c-teal"><rect x="400" y="220" width="240" height="80" rx="6" stroke-width="0.5"/>
+<text class="th" x="520" y="244" text-anchor="middle" dominant-baseline="central">ConcreteObserver</text>
+<line x1="400" y1="258" x2="640" y2="258" stroke="#5DCAA5" stroke-width="0.5"/>
+<text class="ts" x="412" y="276" dominant-baseline="central">+ update(data: any): void</text>
+<text class="ts" x="412" y="296" dominant-baseline="central">+ getState(): any</text>
+</g>
+<line x1="520" y1="220" x2="520" y2="110" stroke="#534AB7" stroke-width="1" marker-end="url(#tri)"/>
+<line x1="280" y1="80" x2="398" y2="60" stroke="#888780" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#ar)"/>
+<text class="ts" x="338" y="56" text-anchor="middle" fill="#888780">0..*</text>
+<line x1="280" y1="270" x2="398" y2="260" stroke="#0F6E56" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#ar)"/>
+<text class="ts" x="338" y="254" text-anchor="middle" fill="#0F6E56">notify</text>
+</svg>`},
+
+{name:"Strategy",cat:"Behavioral",
+desc:"<strong>Strategy</strong> defines a family of interchangeable algorithms, encapsulates each one, and lets clients swap them at runtime.",
+uses:"Sorting, payment processing, routing, compression algorithms",
+svg:`<svg width="100%" viewBox="0 0 680 330" role="img" xmlns="http://www.w3.org/2000/svg"><title>Strategy UML</title><desc>Context holds a Strategy interface; concrete strategies implement the algorithm</desc>
+<defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+<marker id="tri" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M9 1L1 5L9 9" fill="none" stroke="context-stroke" stroke-width="1.5"/></marker></defs>
+<g class="node c-amber"><rect x="20" y="90" width="210" height="90" rx="6" stroke-width="0.5"/>
+<text class="th" x="125" y="114" text-anchor="middle" dominant-baseline="central">Context</text>
+<line x1="20" y1="128" x2="230" y2="128" stroke="#EF9F27" stroke-width="0.5"/>
+<text class="ts" x="32" y="148" dominant-baseline="central">- strategy: Strategy</text>
+<text class="ts" x="32" y="168" dominant-baseline="central">+ setStrategy(s)</text>
+</g>
+<g class="node c-purple"><rect x="310" y="60" width="220" height="80" rx="6" stroke-width="0.5"/>
+<text class="th" x="420" y="84" text-anchor="middle" dominant-baseline="central">«interface» Strategy</text>
+<line x1="310" y1="98" x2="530" y2="98" stroke="#AFA9EC" stroke-width="0.5"/>
+<text class="ts" x="322" y="118" dominant-baseline="central" font-style="italic">+ execute(data: any): any</text>
+</g>
+<line x1="230" y1="135" x2="308" y2="100" stroke="#888780" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#ar)"/>
+<g class="node c-teal"><rect x="240" y="230" width="190" height="70" rx="6" stroke-width="0.5"/>
+<text class="th" x="335" y="254" text-anchor="middle" dominant-baseline="central">ConcreteStrategyA</text>
+<line x1="240" y1="268" x2="430" y2="268" stroke="#5DCAA5" stroke-width="0.5"/>
+<text class="ts" x="252" y="288" dominant-baseline="central">+ execute(data): any</text>
+</g>
+<g class="node c-teal"><rect x="450" y="230" width="190" height="70" rx="6" stroke-width="0.5"/>
+<text class="th" x="545" y="254" text-anchor="middle" dominant-baseline="central">ConcreteStrategyB</text>
+<line x1="450" y1="268" x2="640" y2="268" stroke="#5DCAA5" stroke-width="0.5"/>
+<text class="ts" x="462" y="288" dominant-baseline="central">+ execute(data): any</text>
+</g>
+<line x1="335" y1="230" x2="380" y2="140" stroke="#534AB7" stroke-width="1" marker-end="url(#tri)"/>
+<line x1="545" y1="230" x2="460" y2="140" stroke="#534AB7" stroke-width="1" marker-end="url(#tri)"/>
+</svg>`},
+
+{name:"Adapter",cat:"Structural",
+desc:"<strong>Adapter</strong> allows objects with incompatible interfaces to collaborate by wrapping one class with a translation layer.",
+uses:"Legacy system integration, third-party library wrappers, SDK shims",
+svg:`<svg width="100%" viewBox="0 0 680 310" role="img" xmlns="http://www.w3.org/2000/svg"><title>Adapter UML</title><desc>Client depends on Target interface; Adapter implements Target and wraps an incompatible Adaptee</desc>
+<defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+<marker id="tri" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M9 1L1 5L9 9" fill="none" stroke="context-stroke" stroke-width="1.5"/></marker></defs>
+<g class="node c-amber"><rect x="20" y="110" width="110" height="44" rx="6" stroke-width="0.5"/><text class="th" x="75" y="132" text-anchor="middle" dominant-baseline="central">Client</text></g>
+<g class="node c-purple"><rect x="190" y="60" width="210" height="70" rx="6" stroke-width="0.5"/>
+<text class="th" x="295" y="84" text-anchor="middle" dominant-baseline="central">«interface» Target</text>
+<line x1="190" y1="98" x2="400" y2="98" stroke="#AFA9EC" stroke-width="0.5"/>
+<text class="ts" x="202" y="118" dominant-baseline="central" font-style="italic">+ request(): void</text>
+</g>
+<g class="node c-teal"><rect x="190" y="210" width="210" height="70" rx="6" stroke-width="0.5"/>
+<text class="th" x="295" y="234" text-anchor="middle" dominant-baseline="central">Adapter</text>
+<line x1="190" y1="248" x2="400" y2="248" stroke="#5DCAA5" stroke-width="0.5"/>
+<text class="ts" x="202" y="268" dominant-baseline="central">+ request(): void</text>
+</g>
+<g class="node c-coral"><rect x="470" y="210" width="190" height="70" rx="6" stroke-width="0.5"/>
+<text class="th" x="565" y="234" text-anchor="middle" dominant-baseline="central">Adaptee</text>
+<line x1="470" y1="248" x2="660" y2="248" stroke="#F0997B" stroke-width="0.5"/>
+<text class="ts" x="482" y="268" dominant-baseline="central">+ specificRequest(): void</text>
+</g>
+<line x1="130" y1="132" x2="188" y2="110" stroke="#888780" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#ar)"/>
+<line x1="295" y1="210" x2="295" y2="130" stroke="#534AB7" stroke-width="1" marker-end="url(#tri)"/>
+<line x1="400" y1="248" x2="468" y2="248" stroke="#0F6E56" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#ar)"/>
+<text class="ts" x="433" y="240" text-anchor="middle" fill="#0F6E56">wraps</text>
+</svg>`},
+
+{name:"Command",cat:"Behavioral",
+desc:"<strong>Command</strong> encapsulates a request as an object, allowing you to queue, log, and undo operations.",
+uses:"Undo/redo stacks, task queues, transaction logs, macro recording",
+svg:`<svg width="100%" viewBox="0 0 680 370" role="img" xmlns="http://www.w3.org/2000/svg"><title>Command UML</title><desc>Invoker holds a Command interface; ConcreteCommand implements it and calls a Receiver</desc>
+<defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+<marker id="tri" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M9 1L1 5L9 9" fill="none" stroke="context-stroke" stroke-width="1.5"/></marker></defs>
+<g class="node c-amber"><rect x="20" y="90" width="160" height="80" rx="6" stroke-width="0.5"/>
+<text class="th" x="100" y="114" text-anchor="middle" dominant-baseline="central">Invoker</text>
+<line x1="20" y1="128" x2="180" y2="128" stroke="#EF9F27" stroke-width="0.5"/>
+<text class="ts" x="32" y="148" dominant-baseline="central">- cmd: Command</text>
+<text class="ts" x="32" y="164" dominant-baseline="central">+ invoke(): void</text>
+</g>
+<g class="node c-purple"><rect x="250" y="50" width="200" height="80" rx="6" stroke-width="0.5"/>
+<text class="th" x="350" y="74" text-anchor="middle" dominant-baseline="central">«interface» Command</text>
+<line x1="250" y1="88" x2="450" y2="88" stroke="#AFA9EC" stroke-width="0.5"/>
+<text class="ts" x="262" y="108" dominant-baseline="central" font-style="italic">+ execute(): void</text>
+<text class="ts" x="262" y="124" dominant-baseline="central" font-style="italic">+ undo(): void</text>
+</g>
+<g class="node c-teal"><rect x="200" y="240" width="240" height="100" rx="6" stroke-width="0.5"/>
+<text class="th" x="320" y="264" text-anchor="middle" dominant-baseline="central">ConcreteCommand</text>
+<line x1="200" y1="278" x2="440" y2="278" stroke="#5DCAA5" stroke-width="0.5"/>
+<text class="ts" x="212" y="298" dominant-baseline="central">- receiver: Receiver</text>
+<text class="ts" x="212" y="316" dominant-baseline="central">+ execute(): void</text>
+<text class="ts" x="212" y="332" dominant-baseline="central">+ undo(): void</text>
+</g>
+<g class="node c-blue"><rect x="510" y="240" width="150" height="80" rx="6" stroke-width="0.5"/>
+<text class="th" x="585" y="264" text-anchor="middle" dominant-baseline="central">Receiver</text>
+<line x1="510" y1="278" x2="660" y2="278" stroke="#85B7EB" stroke-width="0.5"/>
+<text class="ts" x="522" y="298" dominant-baseline="central">+ action(): void</text>
+<text class="ts" x="522" y="314" dominant-baseline="central">+ undoAction(): void</text>
+</g>
+<line x1="180" y1="130" x2="248" y2="100" stroke="#888780" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#ar)"/>
+<line x1="320" y1="240" x2="350" y2="130" stroke="#534AB7" stroke-width="1" marker-end="url(#tri)"/>
+<line x1="440" y1="290" x2="508" y2="280" stroke="#0F6E56" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#ar)"/>
+<text class="ts" x="472" y="275" text-anchor="middle" fill="#0F6E56">calls</text>
+</svg>`},
+
+{name:"DAO",cat:"Architectural",
+desc:"<strong>DAO (Data Access Object)</strong> abstracts and encapsulates all access to a data source, decoupling business logic from persistence details.",
+uses:"Database abstraction, repository pattern, testable data layers",
+svg:`<svg width="100%" viewBox="0 0 680 350" role="img" xmlns="http://www.w3.org/2000/svg"><title>DAO pattern UML</title><desc>Service calls a DAO interface; ConcreteDAO implements it and talks to the DataSource; returns a Model object</desc>
+<defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+<marker id="tri" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M9 1L1 5L9 9" fill="none" stroke="context-stroke" stroke-width="1.5"/></marker></defs>
+<g class="node c-amber"><rect x="20" y="120" width="130" height="70" rx="6" stroke-width="0.5"/>
+<text class="th" x="85" y="144" text-anchor="middle" dominant-baseline="central">Service</text>
+<line x1="20" y1="158" x2="150" y2="158" stroke="#EF9F27" stroke-width="0.5"/>
+<text class="ts" x="32" y="178" dominant-baseline="central">+ doLogic(): void</text>
+</g>
+<g class="node c-purple"><rect x="215" y="60" width="220" height="90" rx="6" stroke-width="0.5"/>
+<text class="th" x="325" y="84" text-anchor="middle" dominant-baseline="central">«interface» UserDAO</text>
+<line x1="215" y1="98" x2="435" y2="98" stroke="#AFA9EC" stroke-width="0.5"/>
+<text class="ts" x="227" y="116" dominant-baseline="central" font-style="italic">+ findById(id): User</text>
+<text class="ts" x="227" y="134" dominant-baseline="central" font-style="italic">+ save(user: User): void</text>
+<text class="ts" x="227" y="146" dominant-baseline="central" font-style="italic">+ delete(id): void</text>
+</g>
+<g class="node c-teal"><rect x="215" y="230" width="220" height="90" rx="6" stroke-width="0.5"/>
+<text class="th" x="325" y="254" text-anchor="middle" dominant-baseline="central">UserDAOImpl</text>
+<line x1="215" y1="268" x2="435" y2="268" stroke="#5DCAA5" stroke-width="0.5"/>
+<text class="ts" x="227" y="286" dominant-baseline="central">+ findById(id): User</text>
+<text class="ts" x="227" y="304" dominant-baseline="central">+ save(user: User): void</text>
+<text class="ts" x="227" y="316" dominant-baseline="central" font-style="italic">// SQL queries here</text>
+</g>
+<g class="node c-blue"><rect x="500" y="230" width="160" height="70" rx="6" stroke-width="0.5"/>
+<text class="th" x="580" y="254" text-anchor="middle" dominant-baseline="central">DataSource</text>
+<line x1="500" y1="268" x2="660" y2="268" stroke="#85B7EB" stroke-width="0.5"/>
+<text class="ts" x="512" y="286" dominant-baseline="central">DB / API / file</text>
+</g>
+<g class="node c-gray"><rect x="500" y="60" width="150" height="70" rx="6" stroke-width="0.5"/>
+<text class="th" x="575" y="84" text-anchor="middle" dominant-baseline="central">User (Model)</text>
+<line x1="500" y1="98" x2="650" y2="98" stroke="#B4B2A9" stroke-width="0.5"/>
+<text class="ts" x="512" y="116" dominant-baseline="central">id, name, email</text>
+</g>
+<line x1="150" y1="155" x2="213" y2="120" stroke="#888780" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#ar)"/>
+<line x1="325" y1="230" x2="325" y2="150" stroke="#534AB7" stroke-width="1" marker-end="url(#tri)"/>
+<line x1="435" y1="275" x2="498" y2="265" stroke="#0F6E56" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#ar)"/>
+<line x1="435" y1="260" x2="498" y2="95" stroke="#888780" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#ar)"/>
+<text class="ts" x="470" y="170" text-anchor="middle" fill="#888780">returns</text>
+</svg>`},
+
+{name:"DTO",cat:"Architectural",
+desc:"<strong>DTO (Data Transfer Object)</strong> is a plain object that carries data between layers or processes with no business logic — only fields and getters/setters.",
+uses:"API request/response bodies, service layer boundaries, serialization",
+svg:`<svg width="100%" viewBox="0 0 680 320" role="img" xmlns="http://www.w3.org/2000/svg"><title>DTO pattern UML</title><desc>Controller receives a UserDTO; Mapper converts it to a User domain model; Service processes it; DAO persists it</desc>
+<defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<g class="node c-amber"><rect x="20" y="120" width="120" height="70" rx="6" stroke-width="0.5"/>
+<text class="th" x="80" y="144" text-anchor="middle" dominant-baseline="central">Controller</text>
+<line x1="20" y1="158" x2="140" y2="158" stroke="#EF9F27" stroke-width="0.5"/>
+<text class="ts" x="32" y="178" dominant-baseline="central">receives DTO</text>
+</g>
+<g class="node c-gray"><rect x="30" y="30" width="160" height="70" rx="6" stroke-width="0.5"/>
+<text class="th" x="110" y="54" text-anchor="middle" dominant-baseline="central">UserDTO</text>
+<line x1="30" y1="68" x2="190" y2="68" stroke="#B4B2A9" stroke-width="0.5"/>
+<text class="ts" x="42" y="86" dominant-baseline="central">name: string</text>
+</g>
+<g class="node c-teal"><rect x="200" y="120" width="140" height="70" rx="6" stroke-width="0.5"/>
+<text class="th" x="270" y="144" text-anchor="middle" dominant-baseline="central">Mapper</text>
+<line x1="200" y1="158" x2="340" y2="158" stroke="#5DCAA5" stroke-width="0.5"/>
+<text class="ts" x="212" y="178" dominant-baseline="central">toModel(dto): User</text>
+</g>
+<g class="node c-purple"><rect x="400" y="30" width="150" height="70" rx="6" stroke-width="0.5"/>
+<text class="th" x="475" y="54" text-anchor="middle" dominant-baseline="central">User (Model)</text>
+<line x1="400" y1="68" x2="550" y2="68" stroke="#AFA9EC" stroke-width="0.5"/>
+<text class="ts" x="412" y="86" dominant-baseline="central">id, name, email</text>
+</g>
+<g class="node c-teal"><rect x="400" y="120" width="130" height="70" rx="6" stroke-width="0.5"/>
+<text class="th" x="465" y="144" text-anchor="middle" dominant-baseline="central">Service</text>
+<line x1="400" y1="158" x2="530" y2="158" stroke="#5DCAA5" stroke-width="0.5"/>
+<text class="ts" x="412" y="178" dominant-baseline="central">+ process(u): void</text>
+</g>
+<g class="node c-blue"><rect x="560" y="120" width="100" height="70" rx="6" stroke-width="0.5"/>
+<text class="th" x="610" y="144" text-anchor="middle" dominant-baseline="central">DAO</text>
+<line x1="560" y1="158" x2="660" y2="158" stroke="#85B7EB" stroke-width="0.5"/>
+<text class="ts" x="572" y="178" dominant-baseline="central">persists</text>
+</g>
+<line x1="140" y1="155" x2="198" y2="155" stroke="#888780" stroke-width="1" marker-end="url(#ar)"/>
+<line x1="110" y1="100" x2="110" y2="118" stroke="#888780" stroke-width="1" marker-end="url(#ar)"/>
+<line x1="340" y1="155" x2="398" y2="155" stroke="#888780" stroke-width="1" marker-end="url(#ar)"/>
+<line x1="270" y1="120" x2="420" y2="100" stroke="#888780" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#ar)"/>
+<line x1="530" y1="155" x2="558" y2="155" stroke="#888780" stroke-width="1" marker-end="url(#ar)"/>
+<text class="ts" x="340" y="250" text-anchor="middle" fill="var(--color-text-tertiary)">DTO carries data only — no business logic, no methods beyond getters/setters</text>
+</svg>`}
+];
+
+const catsEl=document.getElementById('cats');
+const board=document.getElementById('board');
+const info=document.getElementById('info');
+
+const groups=[...new Set(P.map(p=>p.cat))];
+groups.forEach(g=>{
+  const lbl=document.createElement('span');
+  lbl.className='cat-label';
+  lbl.textContent=g;
+  catsEl.appendChild(lbl);
+  P.forEach((p,i)=>{
+    if(p.cat!==g)return;
+    const b=document.createElement('button');
+    b.className='tab';
+    b.textContent=p.name;
+    b.dataset.i=i;
+    b.onclick=()=>show(i);
+    catsEl.appendChild(b);
+  });
+});
+
+function show(i){
+  const p=P[i];
+  board.innerHTML=p.svg;
+  info.innerHTML=`${p.desc}<span class="uses">Common uses: ${p.uses}</span>`;
+  document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',+b.dataset.i===i));
+}
+show(0);
+</script>

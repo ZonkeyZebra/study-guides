@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CS 428 Midterm Study Guide — Software Engineering Pitfalls</title>
+<style>
+:root{--bg:#f5f7fb;--paper:#fff;--ink:#172033;--muted:#596579;--line:#dce3ee;--blue:#2457a7;--blue2:#eaf1ff;--gold:#fff5d8;--green:#e8f6ee;--red:#fff0ef;--shadow:0 8px 26px rgba(26,43,72,.08)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+header{background:linear-gradient(120deg,#102a56,#2457a7);color:white;padding:36px max(22px,calc((100vw - 1180px)/2)) 30px}
+header h1{font-size:clamp(1.8rem,4vw,2.7rem);line-height:1.15;margin:0 0 12px}header p{max-width:850px;margin:0;color:#e3ebfa}
+.wrap{max-width:1180px;margin:auto;padding:22px}
+.toolbar{position:sticky;top:0;z-index:10;background:rgba(245,247,251,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:10px max(16px,calc((100vw - 1180px)/2));display:flex;gap:10px;flex-wrap:wrap}
+input,select,button{font:inherit}input[type=search]{flex:1;min-width:210px;padding:10px 13px;border:1px solid var(--line);border-radius:10px;background:white}
+button,.btn{border:1px solid var(--line);border-radius:9px;padding:9px 13px;background:white;color:var(--ink);cursor:pointer;text-decoration:none}
+button:hover,.btn:hover{border-color:var(--blue);color:var(--blue)}button.primary{background:var(--blue);color:white;border-color:var(--blue)}
+.layout{display:grid;grid-template-columns:245px minmax(0,1fr);gap:24px;align-items:start}
+nav{position:sticky;top:78px;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:16px;box-shadow:var(--shadow)}
+nav strong{display:block;margin-bottom:8px}nav a{display:block;color:var(--blue);text-decoration:none;padding:5px 0;font-size:.94rem}
+main{min-width:0}.panel,.card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:18px;box-shadow:var(--shadow)}
+h2{font-size:1.55rem;margin:0 0 12px}h3{font-size:1.15rem;margin:18px 0 6px}h4{margin:12px 0 4px}
+p{margin:7px 0 12px}.muted,.small{color:var(--muted)}.small{font-size:.9rem}
+.tag{display:inline-block;border-radius:999px;padding:2px 9px;font-size:.78rem;background:var(--blue2);color:#214c91;margin:2px 4px 2px 0}
+.note{border-left:4px solid var(--blue);background:var(--blue2);padding:12px 14px;border-radius:7px;margin:12px 0}
+.caution{border-left-color:#c28b17;background:var(--gold)}.good{border-left-color:#25814b;background:var(--green)}
+details{border:1px solid var(--line);border-radius:10px;margin:10px 0;background:#fff}
+summary{cursor:pointer;padding:12px 14px;font-weight:650}
+.details-body{padding:0 14px 14px}
+.source{font-size:.9rem;background:#f3f6fa;border:1px solid var(--line);padding:10px 12px;border-radius:8px;margin:10px 0}
+.source a{color:var(--blue);font-weight:650}.loc{font-weight:650;color:#35445d}
+table{width:100%;border-collapse:collapse;font-size:.94rem;margin:10px 0 16px}th,td{text-align:left;vertical-align:top;border-bottom:1px solid var(--line);padding:9px}th{background:#f2f5fa}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.tile{border:1px solid var(--line);border-radius:11px;padding:13px;background:#fff}
+.quizq{padding:14px 0;border-bottom:1px solid var(--line)}.quizq label{display:block;margin:5px 0;cursor:pointer}
+.answer{display:none;background:var(--green);padding:9px;border-radius:8px;margin-top:8px}.showanswers .answer{display:block}
+.pitfall[hidden]{display:none!important}
+footer{color:var(--muted);font-size:.9rem;padding:25px 0}
+@media(max-width:850px){.layout{grid-template-columns:1fr}nav{position:static;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px}nav strong{grid-column:1/-1}}
+@media print{body{background:white}.toolbar,nav,.no-print{display:none!important}.layout{display:block}.panel,.card{box-shadow:none;break-inside:avoid}details{break-inside:avoid}details .details-body{display:block}a{color:#123!important;text-decoration:underline}}
+</style>
+</head>
+<body>
+<header>
+  <h1>CS 428 Midterm Study Guide</h1>
+  <p><strong>Software engineering pitfalls:</strong> identify the problem, recognize it in a scenario, explain its consequences, and recommend a response. This guide is based only on the supplied readings that could be accessed and reviewed.</p>
+  <p class="small" style="color:#d7e4fb;margin-top:10px">Citation-first edition • Source links and paragraph/page locators included • Searchable and printable</p>
+</header>
+<div class="toolbar no-print">
+  <input id="search" type="search" placeholder="Search concepts, examples, solutions, or sources…">
+  <select id="category"><option value="">All categories</option><option>Managerial</option><option>Political</option><option>Conceptual</option><option>People</option><option>Project execution</option><option>Architecture and lifecycle</option><option>Systems Failure</option></select>
+  <button onclick="clearFilters()">Clear</button>
+  <button onclick="window.print()">Print / Save PDF</button>
+</div>
+<div class="wrap layout">
+<nav>
+<strong>Study guide contents</strong>
+<a href="#how">How to use citations</a>
+<a href="#pitfalls">27 named pitfalls</a>
+<a href="#people">People and organization</a>
+<a href="#projects">Project execution</a>
+<a href="#architecture">Architecture and lifecycle</a>
+<a href="#systems">Systems Failure patterns</a>
+<a href="#confusions">Commonly confused ideas</a>
+<a href="#quiz">Practice quiz</a>
+<a href="#sources">Source register</a>
+</nav>
+<main>
+<section id="how" class="panel">
+<h2>How to cite this guide accurately</h2>
+<p>Each entry separates <strong>what the reading says</strong> from <strong>the study-guide interpretation</strong>, the invented scenario, and the proposed response. This matters because the source may support the concept without containing the exact example or solution wording shown here.</p>
+<div class="note good"><strong>Best citation practice:</strong> cite the original reading for the definition, observation, case, or recommendation. If you use the hypothetical example below, describe it as your own illustration rather than attributing it to Webster.</div>
+<ul>
+<li><strong>Web articles:</strong> use the article title, author (Bruce F. Webster, unless co-authored), publication date, and the named paragraph/section locator supplied below. The webpages generally do not number paragraphs, so use a heading or the opening words of the paragraph rather than inventing page numbers.</li>
+<li><strong>Systems Failure PDF:</strong> use the printed page number shown in the document (15-page report), section title, and pattern number. Example: “Patterns in IT Litigation: Systems Failure, p. 3, ‘Pattern 1: Faulty Towers’.”</li>
+<li><strong>BFWA Pitfalls index:</strong> it is a list of the names and categories of pitfalls. The index alone is not a detailed explanation of every item. Where no linked individual pitfall page was separately reviewed, the summary below is explicitly a concise interpretation of the title, not a quotation or detailed claim from Webster.</li>
+<li><strong>Solutions:</strong> where the source gives recommendations, they are identified as source-based. Where a solution is a reasonable application of the principle, it is labeled “study-guide inference.”</li>
+</ul>
+<div class="note caution"><strong>Coverage note:</strong> The Systems Architecture Heuristics PDF could not be retrieved because the supplied server rejected the large file. The BYU course pages, Armour appendix PDF, and Spotify culture articles were not incorporated into this version. The HTML therefore does not claim to cover every supplied URL.</div>
+</section>
+
+<section id="pitfalls" class="panel">
+<h2>1. The 27 named pitfalls</h2>
+<p class="muted">The BFWA page groups these under managerial, political, and conceptual headings. Search or filter to find one. Expand an item for a concise interpretation, scenario, response, and citation locator.</p>
+<div class="note">The names and category assignments below are directly listed on the BFWA Pitfalls page. Short explanations and scenarios are study-guide paraphrases/illustrations. For a paper, follow the linked individual pitfall page from the index when you need a fuller source explanation.</div>
+<div id="pitfallList">
+<!-- cards injected below -->
+</div>
+<div class="source"><strong>Primary index citation:</strong> <a href="https://bfwa.com/pitfalls/" target="_blank" rel="noopener">Pitfalls — Bruce F. Webster &amp; Associates</a>. Use the heading “Pitfalls of Modern Software Engineering (posted to date)” and the three category lists. The page says these are pitfalls posted from a larger work in progress; it is not presented as an exhaustive final book.</div>
+</section>
+
+<section id="people" class="panel">
+<h2>2. People, talent, and organizational communication</h2>
+<div class="pitfall" data-category="People" data-search="TEPES wetware talent education professionalism experience skills developers hiring scarce programmers">
+<h3>Wetware Crisis and TEPES</h3><span class="tag">People</span><span class="tag">Talent and capability</span>
+<p><strong>Core idea:</strong> the limiting resource in software development can be capable people, not simply machines, tools, or headcount. Webster argues that there are not enough highly capable IT engineers and that inherent talent is unevenly distributed.</p>
+<p><strong>TEPES:</strong> Talent, Education, Professionalism, Experience, Skills. Treat these as different dimensions of a person's contribution; a credential or job title does not prove all five.</p>
+<p><strong>Illustration:</strong> management assumes doubling a team will double output, but new hires need onboarding and coordination and may not have the experience required for the hard technical work.</p>
+<p><strong>Response:</strong> hire and assign for demonstrated capability; develop skills; retain experienced staff; don't treat developers as interchangeable units. These are practical implications of the people-quality argument.</p>
+<div class="source"><strong>Source locator:</strong> <a href="https://brucefwebster.com/2008/01/10/the-wetware-crisis-tepes/" target="_blank">The Wetware Crisis: TEPES</a>, Jan. 10, 2008, opening paragraphs (especially the paragraph beginning “In my forthcoming book…”). The page states the shortage argument and introduces inherent talent. Also see <a href="https://brucefwebster.com/2013/09/13/the-real-software-crisis-byte-magazine-january-1996/" target="_blank">“The Real Software Crisis”</a>, Sept. 13, 2013 repost of BYTE Jan. 1996, opening paragraphs: shortage of top-notch programmers and the importance of people quality.</div>
+</div>
+<div class="pitfall" data-category="People" data-search="Dead Sea effect talented employees leave weaker remain retention">
+<h3>Dead Sea Effect</h3><span class="tag">People</span><span class="tag">Retention</span>
+<p><strong>Core idea:</strong> organizations may retain less capable employees while their strongest people leave. Webster introduces the analogy by describing a system where water enters but leaves through evaporation, leaving a more concentrated, inhospitable environment.</p>
+<p><strong>Illustration:</strong> strong developers repeatedly leave because they are frustrated or have better opportunities; replacements do not restore the same level of expertise, so the organization’s overall capability erodes.</p>
+<p><strong>Response:</strong> address why effective people leave; provide meaningful work, growth, recognition, and a healthy environment. Goal alignment is a related retention strategy discussed in the later article.</p>
+<div class="source"><strong>Source locator:</strong> <a href="https://brucefwebster.com/2008/04/11/the-wetware-crisis-the-dead-sea-effect/" target="_blank">The Wetware Crisis: the Dead Sea effect</a>, Apr. 11, 2008, paragraphs beginning “There are many reasons…” and “Many large corporate/government IT shops…”. For retention and goal-alignment response: <a href="https://brucefwebster.com/2013/09/16/how-to-retain-it-talent-with-goal-alignment/" target="_blank">How to retain IT talent with goal alignment</a>, Sept. 16, 2013, paragraphs beginning “It was the start of what would be a three-year grind…” and “I took the software engineers…”.</div>
+</div>
+<div class="pitfall" data-category="People" data-search="Longest Yard organizational practices skilled workers talent coaching team football">
+<h3>The Longest Yard: Reorganizing IT for Success</h3><span class="tag">People</span><span class="tag">Organization</span>
+<p><strong>Core idea:</strong> managing skilled technical workers like interchangeable industrial-age labor ignores the nature of knowledge work. The article argues that talent management is a key success factor and organizational practices need to evolve.</p>
+<p><strong>Illustration:</strong> a team is managed as if developers are replaceable production-line workers; assignments, motivation, and working relationships are neglected.</p>
+<p><strong>Response:</strong> manage skilled people as skilled people: develop talent, assign work thoughtfully, support teamwork, and adapt organizational practices. These are study-guide implications; cite the article for the broader talent-management argument.</p>
+<div class="source"><strong>Source locator:</strong> <a href="https://brucefwebster.com/2008/04/14/the-longest-yard-reorganizing-it-for-success/" target="_blank">The Longest Yard: Reorganizing IT for Success</a>, Apr. 14, 2008, opening paragraph beginning “Managing talent and skilled workers…”. Co-authored by Ruby Raley; originally printed in the September 2006 Cutter IT Journal.</div>
+</div>
+<div class="pitfall" data-category="People" data-search="Thermocline of Truth information barrier status optimistic reports metrics 80 percent done">
+<h3>Thermocline of Truth</h3><span class="tag">People</span><span class="tag">Project visibility</span>
+<p><strong>Core idea:</strong> a barrier in the organizational chart separates people who know the project's real status from leaders who receive a more optimistic picture. Webster explicitly connects this to missing objective, repeatable metrics and informal “80% done” estimates.</p>
+<p><strong>Illustration:</strong> developers know integration is failing, but executives hear that the project is nearly complete.</p>
+<p><strong>Response:</strong> use objective, repeatable measurements; surface risks and blockers; make status reporting safe and evidence-based; validate completion in a production-like environment.</p>
+<div class="source"><strong>Source locator:</strong> <a href="https://brucefwebster.com/2008/04/15/the-wetware-crisis-the-themocline-of-truth/" target="_blank">The Wetware Crisis: the Thermocline of Truth</a>, Apr. 15, 2008, paragraphs beginning “In many large or even medium-sized IT projects…” and “Several major (and mutually reinforcing) factors…”.</div>
+</div>
+<div class="pitfall" data-category="People" data-search="goal alignment retention individual goals shared team goals">
+<h3>Goal Alignment and IT Talent Retention</h3><span class="tag">People</span><span class="tag">Retention</span>
+<p><strong>Core idea:</strong> understand what employees hope to gain personally from the work and find overlap with team and organizational objectives. The article describes an off-site discussion of engineers' personal goals as part of retaining a team through a difficult product-development period.</p>
+<p><strong>Illustration:</strong> one engineer wants to deepen technical expertise while another values leadership experience; management can create work opportunities that connect those goals to product needs.</p>
+<p><strong>Response:</strong> discuss individual goals openly, create shared goals, and use alignment to sustain commitment. The specific scenario is illustrative.</p>
+<div class="source"><strong>Source locator:</strong> <a href="https://brucefwebster.com/2013/09/16/how-to-retain-it-talent-with-goal-alignment/" target="_blank">How to retain IT talent with goal alignment</a>, Sept. 16, 2013, paragraphs beginning “It was the start of what would be a three-year grind…” and “I took the software engineers…”.</div>
+</div>
+<div class="pitfall" data-category="People" data-search="Negotiations Lovesongs methodology game theory players organization incentives">
+<h3>Negotiations and Lovesongs: Introduction</h3><span class="tag">People</span><span class="tag">Incentives and methodology</span>
+<p><strong>Core idea:</strong> software development in corporations and government is a multi-player situation involving people and groups with different interests. The article opens with a disagreement about whether methodologies are ineffective or simply badly applied, then frames organizational development through game theory.</p>
+<p><strong>Illustration:</strong> a project has a technically sound process, but departments pursue conflicting incentives and do not cooperate.</p>
+<p><strong>Response:</strong> understand stakeholder incentives and the interactions among groups; don't assume a methodology alone resolves organizational conflict. This response is an interpretation of the introduction, not a verbatim checklist from the article.</p>
+<div class="source"><strong>Source locator:</strong> <a href="https://brucefwebster.com/2008/04/16/negotiaions-and-lovesongs-introduction/" target="_blank">Negotiations and Lovesongs: Introduction</a>, Apr. 16, 2008, paragraphs beginning “I used to have arguments…” and “Then while watching the movie…”.</div>
+</div>
+</section>
+
+<section id="projects" class="panel">
+<h2>3. Project execution, metrics, and delivery</h2>
+<div class="pitfall" data-category="Project execution" data-search="runaway project failed review cancelled millions work products abandoned quality management">
+<h3>Anatomy of a Runaway IT Project</h3><span class="tag">Project execution</span><span class="tag">Case study</span>
+<p><strong>Core idea:</strong> a major mission-critical re-engineering effort ran for years, cost millions, and was eventually canceled with work products abandoned. The article reproduces a redacted project-review memo and reports concerns about quality of deliverables and the feasibility of production deployment.</p>
+<p><strong>Illustration from the reading:</strong> the reviewed project had been underway for several years; the memo records consultants' doubts about whether the project as pursued could ever reach successful production deployment.</p>
+<p><strong>Response:</strong> independent review, professional standards for deliverables, honest risk reporting, and a decision to redirect or stop a project when evidence shows the current path is not viable. The PDF Systems Failure reading gives a more explicit proceed/redirect/cancel framework.</p>
+<div class="source"><strong>Source locator:</strong> <a href="https://brucefwebster.com/2008/06/16/anatomy-of-a-runaway-it-project/" target="_blank">Anatomy of a runaway IT project</a>, June 16, 2008, opening paragraphs and “CONFIDENTIAL MEMORANDUM — EYES ONLY,” especially “QUALITY OF WORK AND EFFORT.”</div>
+</div>
+<div class="pitfall" data-category="Project execution" data-search="project metrics informative predictive objective automated instrumentation heuristics">
+<h3>Lies, Damned Lies, and Project Metrics (Parts I–III)</h3><span class="tag">Project execution</span><span class="tag">Measurement</span>
+<p><strong>Core idea:</strong> inaccurate metrics and inadequate measurement can seriously mislead IT project management. An ideal metric should be informative, preferably predictive, objective, and automated. Part II explains that prediction concerns the gap between the current system and what is needed to ship. Part III introduces instrumentation and heuristics as ways to monitor and predict project course.</p>
+<p><strong>Illustration:</strong> a manager counts tasks or lines of code and reports progress, while defects, incomplete integration, and remaining work are not measured.</p>
+<p><strong>Response:</strong> measure meaningful outcomes and project state; collect data systematically; use metrics consistently; combine instrumentation with heuristics. Do not assume one simplistic number captures project health.</p>
+<div class="source"><strong>Source locator:</strong> <a href="https://brucefwebster.com/2013/07/08/lies-damned-lies-and-project-metrics-part-i/" target="_blank">Part I</a>, July 8, 2013, opening paragraphs defining metrics and explaining risk; <a href="https://brucefwebster.com/2013/07/11/lies-damned-lies-and-project-metrics-part-ii/" target="_blank">Part II</a>, July 11, 2013, paragraphs beginning “In my previous post…” and “A predictive IT project metric…”; <a href="https://brucefwebster.com/2013/07/12/lies-damned-lies-and-project-metrics-part-iii/" target="_blank">Part III</a>, July 12, 2013, opening paragraph introducing instrumentation and heuristics.</div>
+</div>
+<div class="pitfall" data-category="Project execution" data-search="defer difficult low hanging fruit user interface 80 percent integration difficult subsystem">
+<h3>Do Not Defer the Difficult</h3><span class="tag">Project execution</span><span class="tag">Risk</span>
+<p><strong>Core idea:</strong> teams naturally work on easy, visible tasks to demonstrate progress. A nearly complete-looking UI can exist before application functionality. Teams may also leave a subsystem at about 80% when it becomes difficult, then move to easier work elsewhere.</p>
+<p><strong>Illustration:</strong> the demo looks polished, but core integration, performance, and complex business logic are still unresolved.</p>
+<p><strong>Response:</strong> identify the hardest and riskiest work early; prototype and integrate early; don't use visible UI progress as a proxy for system completion. Early prototyping/integration is a study-guide recommendation derived from the problem.</p>
+<div class="source"><strong>Source locator:</strong> <a href="https://brucefwebster.com/2013/08/26/do-not-defer-the-difficult-in-it-projects/" target="_blank">Do not defer the difficult in IT projects</a>, Aug. 26, 2013, paragraphs beginning “When an IT project starts…” and “Such tasks often include the user interface…”.</div>
+</div>
+<div class="pitfall" data-category="Project execution" data-search="Septic Code critical source code defective rewrite Never Ending Story production">
+<h3>Septic Code</h3><span class="tag">Project execution</span><span class="tag">Code quality</span>
+<p><strong>Core idea:</strong> a portion of source code can be so defective and so central to dependent code that the project cannot stabilize or move toward production until that code is removed wholesale and replaced with professionally built code. Webster distinguishes this from merely poorly written code.</p>
+<p><strong>Illustration:</strong> multiple modules depend on a critical component whose behavior is unreliable; patches to dependent modules cannot make the whole system stable.</p>
+<p><strong>Response:</strong> identify the central defective component, assess dependencies, and replace it rather than endlessly patching around it. This follows the article's explicit description of cutting out and replacing the code.</p>
+<div class="source"><strong>Source locator:</strong> <a href="https://brucefwebster.com/2013/09/12/septic-code-why-some-large-it-projects-never-go-into-production/" target="_blank">Septic code: why some large IT projects never go into production</a>, Sept. 12, 2013, paragraphs beginning “A common pattern…” and “By that, I mean…”.</div>
+</div>
+<div class="pitfall" data-category="Project execution" data-search="Never Ending Story schedule slips cancellation inadequate system requirements qualified managers developers">
+<h3>Never-Ending Story / Runaway Project</h3><span class="tag">Project execution</span><span class="tag">Systems Failure pattern 4</span>
+<p><strong>Core idea:</strong> delivery dates repeatedly slip until the vendor abandons the work, the client cancels, or an inadequate system is delivered. The Systems Failure paper identifies unclear, unstable, unconstrained requirements and lack of qualified technical managers/developers as recurring causes.</p>
+<p><strong>Illustration:</strong> each revised deadline passes without a deployable system, while costs continue to rise.</p>
+<p><strong>Response:</strong> stabilize and constrain requirements; ensure qualified technical leadership; use staged delivery; document risks; decide whether to proceed, redirect, scale back, or cancel.</p>
+<div class="source"><strong>Source locator:</strong> Systems Failure PDF, p. 6, “Pattern 4: The Never-Ending Story,” especially summary, causes, and recommendations (PDF text lines 190–207 onward). Also <a href="https://brucefwebster.com/2013/09/12/septic-code-why-some-large-it-projects-never-go-into-production/" target="_blank">Septic code</a>, Sept. 12, 2013, opening section describing the pattern.</div>
+</div>
+</section>
+
+<section id="architecture" class="panel">
+<h2>4. Architecture, maintenance, and technology lifecycle</h2>
+<div class="pitfall" data-category="Architecture and lifecycle" data-search="Arc of Engineering quality rises peak declines changes engineering anti-pattern">
+<h3>Arc of Engineering</h3><span class="tag">Architecture and lifecycle</span>
+<p><strong>Core idea:</strong> system quality rises over time to a peak and then begins to decline. The article explicitly names this pattern the “arc of engineering.”</p>
+<p><strong>Illustration:</strong> continued changes after a system has reached a strong, stable state introduce complexity and defects that reduce quality.</p>
+<p><strong>Response:</strong> evaluate whether changes improve the system; protect stability; avoid equating more change or more features with better quality. This response is a practical inference from the pattern.</p>
+<div class="source"><strong>Source locator:</strong> <a href="https://brucefwebster.com/2008/05/21/the-arc-of-engineering/" target="_blank">The Arc of Engineering</a>, May 21, 2008, paragraph beginning “I have observed a pattern…” and the paragraph defining the rise-to-peak-then-decline curve.</div>
+</div>
+<div class="pitfall" data-category="Architecture and lifecycle" data-search="software rot maintenance architect fragile ripple changes legacy">
+<h3>Software Rot and the Maintenance Architect</h3><span class="tag">Architecture and lifecycle</span><span class="tag">Maintenance</span>
+<p><strong>Core idea:</strong> software becomes fragile and harder to support as changes are made with little analysis of secondary effects. Interdependencies can cause a fix in one system to ripple into others. The article also observes that maintenance may be assigned to entry-level or less effective engineers, contributing to declining quality.</p>
+<p><strong>Illustration:</strong> a quick patch fixes one bug but breaks another subsystem; more patches create a fragile network of workarounds.</p>
+<p><strong>Response:</strong> treat maintenance as architectural work, analyze change impact, coordinate dependencies, and provide experienced oversight. The article's title proposes a maintenance architect; cite the article for the role and rationale.</p>
+<div class="source"><strong>Source locator:</strong> <a href="https://brucefwebster.com/2013/07/22/controlling-it-costs-using-a-maintenance-architect/" target="_blank">Controlling IT Costs: Using a Maintenance Architect</a>, July 22, 2013, paragraphs beginning “Software rots over time” and “When a defect is fixed…”.</div>
+</div>
+<div class="pitfall" data-category="Architecture and lifecycle" data-search="technology lifecycle firefly underdone conveyor belt landfill">
+<h3>Technology Lifecycle Mismatch: Four Patterns</h3><span class="tag">Architecture and lifecycle</span><span class="tag">Technology selection</span>
+<p><strong>Core idea:</strong> technologies age at different rates, and a technology's product lifecycle may not align with the organization's business or development lifecycle.</p>
+<table><tr><th>Pattern</th><th>Meaning</th><th>Scenario clue</th></tr>
+<tr><td><strong>Firefly</strong></td><td>Looks promising but remains inadequate; each new release seems to promise a fix, keeping the organization waiting.</td><td>“The next version will finally work.”</td></tr>
+<tr><td><strong>Underdone</strong></td><td>Technology is immature or not yet sufficiently stable.</td><td>Early release requires the next corrective release.</td></tr>
+<tr><td><strong>Conveyor Belt</strong></td><td>Technology has a useful but limited lifespan; it may be carried out of viability during the project.</td><td>Support or useful life will end before project value is realized.</td></tr>
+<tr><td><strong>Landfill</strong></td><td>Technology is effectively obsolete or has little future viability.</td><td>Adoption begins with an already-declining or dead-end choice.</td></tr></table>
+<p><strong>Response:</strong> compare technology maturity and lifespan with the time horizon of the project; check support, market viability, upgrade paths, and exit/migration options.</p>
+<div class="source"><strong>Source locator:</strong> <a href="https://brucefwebster.com/2013/08/23/getting-technology-lifecycles-in-sync/" target="_blank">Getting technology lifecycles in sync</a>, Aug. 23, 2013, opening paragraphs on different lifecycle rates and the section headings “Firefly Technologies,” “Underdone Technologies,” “Conveyor Belt Technologies,” and “Landfill Technologies.”</div>
+</div>
+<div class="pitfall" data-category="Architecture and lifecycle" data-search="Conway's Law organizational communication architecture silos teams">
+<h3>Conway's Law</h3><span class="tag">Architecture and lifecycle</span><span class="tag">Organization design</span>
+<p><strong>Core idea:</strong> the architecture of a system tends to copy the communication structure of the organization that builds it. Webster's QUBE case describes organizational silos, fragmented testing, barriers to communication, and a similarly balkanized architecture.</p>
+<p><strong>Illustration:</strong> departments build separate components without coordination, and the resulting system has awkward boundaries and integration problems.</p>
+<p><strong>Response:</strong> align team communication and responsibilities with desired architecture; create cross-team coordination and coherent QA/testing structures.</p>
+<div class="source"><strong>Source locator:</strong> <a href="https://brucefwebster.com/2013/10/08/remember-conways-law/" target="_blank">Remember Conway’s Law</a>, Oct. 8, 2013, QUBE case and quoted executive-summary passage; the article quotes the law explicitly in the paragraph beginning “Any organization that designs a system…”.</div>
+</div>
+<div class="pitfall" data-category="Architecture and lifecycle" data-search="Windows Forever legacy lock in success compatibility operating system platform">
+<h3>Microsoft Windows Forever and Ever?</h3><span class="tag">Architecture and lifecycle</span><span class="tag">Legacy technology</span>
+<p><strong>Core idea:</strong> a highly successful and widely adopted platform can create a legacy that is difficult to move away from. Compatibility and installed-base dependence can make change difficult even when the platform ages.</p>
+<p><strong>Illustration:</strong> an organization depends on applications and workflows tied to a mature platform, making migration costly and risky.</p>
+<p><strong>Response:</strong> plan for compatibility and eventual migration; weigh the value of a stable installed base against long-term dependency. This is a study-guide interpretation of the article's legacy discussion.</p>
+<div class="source"><strong>Source locator:</strong> <a href="https://brucefwebster.com/2013/09/18/microsoft-windows-forever-and-ever-windows-magazine-june-1996/" target="_blank">“Microsoft Windows Forever and Ever?”</a>, Sept. 18, 2013 repost, opening paragraphs and the discussion beginning “Is there such a thing as too much success?”. Note: this is a 2013 repost of a Windows Magazine article from June 1996.</div>
+</div>
+</section>
+
+<section id="systems" class="panel">
+<h2>5. Systems Failure: six recurring patterns</h2>
+<p>The report analyzes 120 IT litigation cases from 1976–2000 and says the patterns overlap; a single case may exhibit two or three. The paper also cautions that its survey is neither exhaustive nor definitive.</p>
+<div class="source"><strong>Source locator:</strong> <a href="https://brucefwebster.com/BFWA-SystemsFailure.pdf" target="_blank">Patterns in IT Litigation: Systems Failure (1976–2000)</a>, Abstract and “A Survey of IT Litigation: Systems Failure,” printed pp. 1–2.</div>
+<div class="grid">
+<div class="tile"><h3>1. Faulty Towers</h3><p>Client buys a system, then claims it is defective: errors, crashes, or unsatisfactory operation.</p><p><strong>Response:</strong> define acceptance and quality standards; document defects and repair obligations.</p><p class="small"><strong>Citation:</strong> PDF p. 3, “Pattern 1: Faulty Towers,” summary, causes, recommendations.</p></div>
+<div class="tile"><h3>2. Irrational Exuberance</h3><p>Vendor makes unrealistic promises and/or client expects a “silver bullet” that solves broad IT problems.</p><p><strong>Response:</strong> agree on written definitions, specifications, and timetables; make sure both sides understand what is promised.</p><p class="small"><strong>Citation:</strong> PDF pp. 4–5, “Pattern 2: Irrational Exuberance,” especially recommendations.</p></div>
+<div class="tile"><h3>3. Three's a Crowd</h3><p>Third parties such as leasing companies, consultants, or value-added resellers complicate responsibility and disputes.</p><p><strong>Response:</strong> clarify what each party provides, warrants, recommends, and is responsible for.</p><p class="small"><strong>Citation:</strong> PDF p. 5, “Pattern 3: Three’s a Crowd,” summary and recommendations.</p></div>
+<div class="tile"><h3>4. Never-Ending Story</h3><p>Delivery dates keep slipping until the vendor abandons, client cancels, or an unacceptable system is delivered.</p><p><strong>Response:</strong> stable constrained requirements, qualified technical managers/developers, staged scope, and explicit recovery decisions.</p><p class="small"><strong>Citation:</strong> PDF pp. 5–6, “Pattern 4: The Never-Ending Story.”</p></div>
+<div class="tile"><h3>5. Unplanned Obsolescence</h3><p>A system or product becomes unavailable, unsupported, or obsolete unexpectedly, often after vendor decisions.</p><p><strong>Response:</strong> migration paths, support commitments, and contingency plans for technologies the client does not control.</p><p class="small"><strong>Citation:</strong> PDF p. 6, “Pattern 5: Unplanned Obsolescence.”</p></div>
+<div class="tile"><h3>6. Unintended Consequences</h3><p>A vendor changes functionality or configuration in a way that harms existing clients or systems.</p><p><strong>Response:</strong> impact analysis, thorough testing, limited rollout, and rapid correction.</p><p class="small"><strong>Citation:</strong> PDF pp. 6–7, “Pattern 6: Unintended Consequences.”</p></div>
+</div>
+<h3>Eight quality attributes from the report</h3>
+<table><tr><th>Attribute</th><th>Meaning in the report</th><th>Failure example (illustrative)</th></tr>
+<tr><td>Reliability</td><td>Functions without unacceptable errors or downtime.</td><td>Crashes during ordinary use.</td></tr>
+<tr><td>Performance</td><td>Operations complete within client-acceptable times.</td><td>Reports take too long.</td></tr>
+<tr><td>Functionality</td><td>Enough usable features to meet client needs.</td><td>Required business functions are missing.</td></tr>
+<tr><td>Compatibility</td><td>Interacts effectively with existing and external systems.</td><td>Cannot exchange data with the existing database.</td></tr>
+<tr><td>Lifespan</td><td>Provides acceptable reliability, performance, and functionality long enough to justify cost; may grow with client.</td><td>Becomes obsolete too quickly.</td></tr>
+<tr><td>Deployment</td><td>Delivered and deployed in a timeframe acceptable to client.</td><td>Implementation misses the business deadline.</td></tr>
+<tr><td>Support</td><td>Can be upgraded and repaired over time.</td><td>No viable support or repair path.</td></tr>
+<tr><td>Cost</td><td>Cumulative development, deployment, upgrade, and maintenance expense is justified.</td><td>Lifecycle costs exceed value.</td></tr></table>
+<div class="source"><strong>Quality citation:</strong> Systems Failure PDF, printed p. 2, section “The Core Issue: Quality,” bullets for the eight attributes.</div>
+<h3>Four lessons from the report</h3>
+<ol>
+<li>Get expert legal and IT guidance before signing.</li>
+<li>Specify critical terms and protections in writing.</li>
+<li>Act quickly when a project is in serious trouble; document risks and choose to proceed, redirect, scale back, or cancel.</li>
+<li>Remember that new technology entails risks, including the possibility that the proposed system is not technically feasible.</li>
+</ol>
+<div class="source"><strong>Source locator:</strong> Systems Failure PDF, printed pp. 7–8, “Lessons to Learn,” Lessons 1–4.</div>
+</section>
+
+<section id="confusions" class="panel">
+<h2>6. Commonly confused concepts</h2>
+<table><tr><th>Scenario clue</th><th>Best match</th><th>How to distinguish it</th></tr>
+<tr><td>Talented engineers are scarce / team lacks capability.</td><td>Wetware Crisis / TEPES</td><td>Concern is availability or quality of people.</td></tr>
+<tr><td>Strong employees leave; weaker staff remain.</td><td>Dead Sea Effect</td><td>Concern is selective retention and organizational decline.</td></tr>
+<tr><td>Executives receive a falsely optimistic status picture.</td><td>Thermocline of Truth</td><td>Concern is distorted information flow.</td></tr>
+<tr><td>Easy tasks are completed while hard work is postponed.</td><td>Do Not Defer the Difficult</td><td>Concern is task sequencing and false progress.</td></tr>
+<tr><td>A critical central component prevents stabilization.</td><td>Septic Code</td><td>Concern is irredeemably defective code requiring wholesale replacement.</td></tr>
+<tr><td>Changes gradually make the codebase fragile.</td><td>Software Rot</td><td>Concern is cumulative maintenance/change impact.</td></tr>
+<tr><td>Team silos are reflected in system structure.</td><td>Conway's Law</td><td>Concern is organizational communication shaping architecture.</td></tr>
+<tr><td>New release promises a fix, but the next release is also flawed.</td><td>Firefly Technology</td><td>Concern is repeatedly chasing promised maturity.</td></tr>
+<tr><td>Technology is available but too immature.</td><td>Underdone Technology</td><td>Concern is premature adoption.</td></tr>
+<tr><td>Project outlasts the useful life of the technology.</td><td>Conveyor Belt Technology</td><td>Concern is limited lifecycle duration.</td></tr>
+<tr><td>Vendor or client makes unrealistic claims/assumptions.</td><td>Irrational Exuberance</td><td>Concern is inflated expectations and promises.</td></tr>
+<tr><td>System is defective in ordinary operation.</td><td>Faulty Towers</td><td>Concern is delivered system quality.</td></tr>
+<tr><td>Vendor change breaks existing clients.</td><td>Unintended Consequences</td><td>Concern is adverse effects from a change.</td></tr></table>
+</section>
+
+<section id="quiz" class="panel">
+<h2>7. Practice quiz</h2>
+<p class="muted">Choose an answer, then reveal the explanation. Questions are original practice scenarios, not quotations from the readings.</p>
+<form id="quizForm">
+<div class="quizq"><strong>1. Strong developers keep leaving, and the remaining organization becomes less capable.</strong><label><input type="radio" name="q1" value="a"> Thermocline of Truth</label><label><input type="radio" name="q1" value="b"> Dead Sea Effect</label><label><input type="radio" name="q1" value="c"> Arc of Engineering</label><div class="answer">Correct: Dead Sea Effect. The defining clue is the loss of the strongest people and the resulting change in organizational competence. Source: Dead Sea effect, Apr. 11, 2008, paragraphs describing the organizational analogy.</div></div>
+<div class="quizq"><strong>2. Executives believe a project is 80% complete, but developers know the real status is much worse.</strong><label><input type="radio" name="q2" value="a"> Thermocline of Truth</label><label><input type="radio" name="q2" value="b"> Conveyor Belt Technology</label><label><input type="radio" name="q2" value="c"> Three's a Crowd</label><div class="answer">Correct: Thermocline of Truth. The clue is a barrier to accurate progress information. Source: Thermocline article, Apr. 15, 2008, paragraphs 20–23.</div></div>
+<div class="quizq"><strong>3. A team demos a polished UI while the core functionality and integration are unfinished.</strong><label><input type="radio" name="q3" value="a"> Unplanned Obsolescence</label><label><input type="radio" name="q3" value="b"> Do Not Defer the Difficult</label><label><input type="radio" name="q3" value="c"> Faulty Towers</label><div class="answer">Correct: Do Not Defer the Difficult. The article specifically warns that a UI can look nearly complete before the application has functionality. Source: Aug. 26, 2013, opening paragraphs.</div></div>
+<div class="quizq"><strong>4. A central component is so defective that dependent code cannot stabilize until it is replaced.</strong><label><input type="radio" name="q4" value="a"> Septic Code</label><label><input type="radio" name="q4" value="b"> Software Rot</label><label><input type="radio" name="q4" value="c"> Firefly Technology</label><div class="answer">Correct: Septic Code. The article distinguishes this from ordinary poor design: the critical code must be removed wholesale. Source: Sept. 12, 2013, paragraphs beginning “By that, I mean…”.</div></div>
+<div class="quizq"><strong>5. Several teams work in silos, and the system architecture mirrors those communication barriers.</strong><label><input type="radio" name="q5" value="a"> TEPES</label><label><input type="radio" name="q5" value="b"> Conway's Law</label><label><input type="radio" name="q5" value="c"> Irrational Exuberance</label><div class="answer">Correct: Conway's Law. Webster's QUBE case links organizational silos and barriers to communication with balkanized architecture. Source: Oct. 8, 2013, QUBE case and quoted law.</div></div>
+<div class="quizq"><strong>6. A technology looks promising, but each release is flawed and the next release is always expected to fix it.</strong><label><input type="radio" name="q6" value="a"> Underdone</label><label><input type="radio" name="q6" value="b"> Firefly</label><label><input type="radio" name="q6" value="c"> Landfill</label><div class="answer">Correct: Firefly technology. Source: Getting technology lifecycles in sync, Aug. 23, 2013, “Firefly Technologies.”</div></div>
+<div class="quizq"><strong>7. A vendor modifies a product without sufficient impact analysis or testing, harming existing clients.</strong><label><input type="radio" name="q7" value="a"> Unintended Consequences</label><label><input type="radio" name="q7" value="b"> Never-Ending Story</label><label><input type="radio" name="q7" value="c"> Dead Sea Effect</label><div class="answer">Correct: Unintended Consequences. Systems Failure PDF, pp. 6–7, Pattern 6 and recommendations.</div></div>
+<div class="quizq"><strong>8. A project repeatedly misses revised delivery dates and eventually gets canceled or delivers an unacceptable system.</strong><label><input type="radio" name="q8" value="a"> Faulty Towers</label><label><input type="radio" name="q8" value="b"> Never-Ending Story</label><label><input type="radio" name="q8" value="c"> Arc of Engineering</label><div class="answer">Correct: Never-Ending Story. Systems Failure PDF, pp. 5–6, Pattern 4.</div></div>
+<button class="primary" type="button" onclick="gradeQuiz()">Grade quiz</button>
+<button type="reset" onclick="resetQuiz()">Reset</button>
+<div id="score" aria-live="polite"></div>
+</form>
+</section>
+
+<section id="sources" class="panel">
+<h2>8. Source register and citation map</h2>
+<p>These are the supplied sources used in this version. Open the original reading before submitting an academic citation; follow your instructor's required citation style (APA, IEEE, etc.).</p>
+<ol>
+<li><a href="https://bfwa.com/pitfalls/" target="_blank">Pitfalls — Bruce F. Webster &amp; Associates</a>. Category headings and 27 named pitfalls. Use “Managerial pitfalls,” “Political pitfalls,” and “Conceptual pitfalls.”</li>
+<li><a href="https://brucefwebster.com/2008/01/10/the-wetware-crisis-tepes/" target="_blank">The Wetware Crisis: TEPES</a>. Jan. 10, 2008. Opening paragraphs: shortage of good IT engineers and inherent talent.</li>
+<li><a href="https://brucefwebster.com/2008/04/11/the-wetware-crisis-the-dead-sea-effect/" target="_blank">The Wetware Crisis: the Dead Sea effect</a>. Apr. 11, 2008. Opening analogy and paragraphs on hiring/retention.</li>
+<li><a href="https://brucefwebster.com/2008/04/14/the-longest-yard-reorganizing-it-for-success/" target="_blank">The Longest Yard: Reorganizing IT for Success</a>. Apr. 14, 2008. Opening paragraph on skilled workers and organizational practices; co-authored with Ruby Raley.</li>
+<li><a href="https://brucefwebster.com/2008/04/15/the-wetware-crisis-the-themocline-of-truth/" target="_blank">The Wetware Crisis: the Thermocline of Truth</a>. Apr. 15, 2008. Paragraphs defining the organizational barrier and the problem of subjective 80%-complete estimates.</li>
+<li><a href="https://brucefwebster.com/2008/04/16/negotiaions-and-lovesongs-introduction/" target="_blank">Negotiations and Lovesongs: Introduction</a>. Apr. 16, 2008. Methodology debate and framing of software development as multi-player game theory.</li>
+<li><a href="https://brucefwebster.com/2008/05/21/the-arc-of-engineering/" target="_blank">The Arc of Engineering</a>. May 21, 2008. Definition of quality rising to a peak and then declining.</li>
+<li><a href="https://brucefwebster.com/2008/06/16/anatomy-of-a-runaway-it-project/" target="_blank">Anatomy of a runaway IT project</a>. June 16, 2008. Redacted project review; years of work, millions spent, canceled project, quality-of-work concerns.</li>
+<li><a href="https://brucefwebster.com/2013/07/08/lies-damned-lies-and-project-metrics-part-i/" target="_blank">Lies, Damned Lies, and Project Metrics (Part I)</a>. July 8, 2013. Inaccurate metrics and meaning of measurement.</li>
+<li><a href="https://brucefwebster.com/2013/07/11/lies-damned-lies-and-project-metrics-part-ii/" target="_blank">Lies, Damned Lies, and Project Metrics (Part II)</a>. July 11, 2013. Ideal metric characteristics and predictive gap to production.</li>
+<li><a href="https://brucefwebster.com/2013/07/12/lies-damned-lies-and-project-metrics-part-iii/" target="_blank">Lies, Damned Lies, and Project Metrics (Part III)</a>. July 12, 2013. Instrumentation and heuristics.</li>
+<li><a href="https://brucefwebster.com/2013/07/22/controlling-it-costs-using-a-maintenance-architect/" target="_blank">Controlling IT Costs: Using a Maintenance Architect</a>. July 22, 2013. Software rot, ripple effects, maintenance staffing.</li>
+<li><a href="https://brucefwebster.com/2013/08/23/getting-technology-lifecycles-in-sync/" target="_blank">Getting technology lifecycles in sync</a>. Aug. 23, 2013. Four lifecycle mismatch patterns.</li>
+<li><a href="https://brucefwebster.com/2013/08/26/do-not-defer-the-difficult-in-it-projects/" target="_blank">Do not defer the difficult in IT projects</a>. Aug. 26, 2013. Low-hanging fruit, UI mockups, and 80%-complete subsystems.</li>
+<li><a href="https://brucefwebster.com/2013/09/12/septic-code-why-some-large-it-projects-never-go-into-production/" target="_blank">Septic code: why some large IT projects never go into production</a>. Sept. 12, 2013. Never-Ending Story and critical code requiring wholesale replacement.</li>
+<li><a href="https://brucefwebster.com/2013/09/13/the-real-software-crisis-byte-magazine-january-1996/" target="_blank">“The Real Software Crisis” (BYTE Magazine, January 1996)</a>. Reposted Sept. 13, 2013. Programmer shortage and people quality.</li>
+<li><a href="https://brucefwebster.com/2013/09/16/how-to-retain-it-talent-with-goal-alignment/" target="_blank">How to retain IT talent with goal alignment</a>. Sept. 16, 2013. Personal goals, team discussion, and retention.</li>
+<li><a href="https://brucefwebster.com/2013/09/18/microsoft-windows-forever-and-ever-windows-magazine-june-1996/" target="_blank">“Microsoft Windows Forever and Ever?”</a>. Reposted Sept. 18, 2013; originally Windows Magazine, June 1996. Windows legacy and success.</li>
+<li><a href="https://brucefwebster.com/2013/10/08/remember-conways-law/" target="_blank">Remember Conway’s Law</a>. Oct. 8, 2013. QUBE case, organizational silos, and Conway's Law quotation.</li>
+<li><a href="https://brucefwebster.com/BFWA-SystemsFailure.pdf" target="_blank">Patterns in IT Litigation: Systems Failure (1976–2000)</a>. 15-page PDF. Use printed page numbers and pattern headings: pp. 2–7 for quality attributes and six patterns; pp. 7–8 for lessons.</li>
+</ol>
+<div class="note caution"><strong>Not yet incorporated:</strong> Systems Architecture Heuristics PDF (download size/retrieval failure); BYU CS428 course pages and podcasts (access denied); Armour Orders of Ignorance appendix PDF (access denied); Spotify engineering culture Parts 1 and 2 (not reviewed). Uploading the PDFs or transcripts would allow precise page/slide/episode citations to be added.</div>
+</section>
+<footer>Prepared as a study aid from the URLs supplied by the student. Examples labeled illustrative are newly written scenarios. Check the original source and your instructor's citation requirements before submitting.</footer>
+</main>
+</div>
+<script>
+const search=document.getElementById('search'), category=document.getElementById('category');
+const pitfalls=[
+['Managerial','Using the wrong developers','Assigning people without the required capability or fit.','A critical architecture task is assigned to someone without the needed experience.','Evaluate demonstrated skills and match responsibilities to capability.','BFWA Pitfalls index: “Managerial pitfalls” list; related: TEPES (Jan. 10, 2008) and “The Real Software Crisis” (BYTE Jan. 1996 repost).'],
+['Managerial','Using the wrong metrics (or none at all)','Measuring activity or convenient numbers instead of meaningful project health.','Counting lines of code while defects and incomplete integration go unmeasured.','Use informative, preferably predictive, objective, automated metrics.','BFWA Pitfalls index; “Lies, Damned Lies, and Project Metrics,” Parts I–III (July 8, 11, 12, 2013); Thermocline article (Apr. 15, 2008).'],
+['Managerial','Lying to yourself and others','Concealing, distorting, or accepting an inaccurate picture of project status.','Reporting “on track” despite known critical blockers.','Make status evidence-based; surface risks and permit candid reporting.','BFWA Pitfalls index; related: Thermocline of Truth (Apr. 15, 2008).'],
+['Managerial','Not identifying and managing risks','Failing to identify uncertainty and act on it before it becomes a crisis.','Integration with a vendor system is left until late in the schedule.','Identify, prioritize, assign, and revisit risks throughout the project.','BFWA Pitfalls index; related: Systems Failure PDF, Lessons 3–4, pp. 7–8.'],
+['Managerial','Adopting a technology or methodology without well-defined objectives','Selecting a tool or process before defining the problem and intended outcome.','Adopting a framework because it is fashionable.','Define the problem, success criteria, costs, and trade-offs first.','BFWA Pitfalls index; related: Getting technology lifecycles in sync (Aug. 23, 2013).'],
+['Managerial','Misjudging relative costs','Comparing visible purchase/development cost while ignoring total lifecycle cost.','Budget includes initial implementation but not maintenance, migration, or support.','Evaluate cumulative development, deployment, upgrade, and maintenance costs.','BFWA Pitfalls index; Systems Failure PDF, p. 2, “The Core Issue: Quality” (Cost); Maintenance Architect article (July 22, 2013).'],
+['Managerial','Allowing new features to creep (or pour) in','Allowing scope to expand without controlling schedule, cost, or priorities.','Stakeholders keep adding reports and integrations after commitments are made.','Use change control; assess cost, risk, and schedule impact before approval.','BFWA Pitfalls index; related: Systems Failure PDF, Pattern 4, pp. 5–6 (requirements stability).'],
+['Managerial','Allowing the specification to drift or change without agreement','Requirements change without shared understanding or agreement.','Client and vendor work from different versions of requirements.','Maintain a controlled specification and communicate approved changes.','BFWA Pitfalls index; Systems Failure PDF, Pattern 4, pp. 5–6; Pattern 2, pp. 4–5.'],
+['Managerial','Attempting too much, too fast, too soon','Taking on excessive scope or complexity before capability and feasibility are established.','Replacing every legacy system in one high-risk release.','Reduce scope, stage delivery, validate feasibility, and build incrementally.','BFWA Pitfalls index; Systems Failure PDF, Pattern 4, pp. 5–6; Lessons 3–4, pp. 7–8.'],
+['Managerial','Abandoning good software engineering practices','Skipping disciplined engineering to create an appearance of speed.','Testing and reviews are dropped to meet a date.','Preserve professional standards for design, code, testing, and review.','BFWA Pitfalls index; Anatomy of a runaway IT project (June 16, 2008), “Quality of Work and Effort”; Septic Code (Sept. 12, 2013).'],
+['Political','Not educating and enlisting management before the fact','Failing to secure informed management understanding and support before a change.','A team changes architecture without explaining the trade-offs to executives.','Explain objectives, risks, costs, and expected organizational impact early.','BFWA Pitfalls index. This is a title-level summary; consult the linked individual pitfall page from the index for its full discussion.'],
+['Political','Underestimating the resistance','Assuming people or departments will accept a change without friction.','Users continue using old processes because the new system disrupts established work.','Identify stakeholders, listen to concerns, and plan adoption and communication.','BFWA Pitfalls index. Title-level summary; individual pitfall page is the detailed source.'],
+['Political','Overselling the technology or methodology','Promising capabilities or benefits beyond what evidence supports.','A vendor claims a product will solve all integration problems.','Use realistic claims, written definitions, specifications, and demonstrations.','BFWA Pitfalls index; Systems Failure PDF, Pattern 2: Irrational Exuberance, pp. 4–5.'],
+['Political','Not recognizing the politics of architecture','Ignoring authority, ownership, and competing interests that shape architecture.','Departments resist shared services because they lose control.','Make decision rights explicit and use cross-team architecture governance.','BFWA Pitfalls index; related: Remember Conway’s Law (Oct. 8, 2013), QUBE silos.'],
+['Political','Getting religious about the technology or methodology','Treating one tool or process as unquestionably correct.','A team refuses alternatives because “we always use this framework.”','Evaluate choices against requirements and evidence.','BFWA Pitfalls index. Title-level summary; individual pitfall page is the detailed source.'],
+['Political','Getting on the feature release treadmill','Prioritizing constant feature releases over stability and sustainable maintenance.','Every release adds features while defects and compatibility issues accumulate.','Balance feature work with maintenance, quality, and release discipline.','BFWA Pitfalls index. Title-level summary; individual pitfall page is the detailed source.'],
+['Political','Betting the company on a given technology or methodology','Making organizational success depend on one unproven choice.','The entire business moves to an immature platform without a fallback.','Validate feasibility, stage commitment, and maintain contingency options.','BFWA Pitfalls index; related: Systems Failure PDF, Lessons 4, pp. 7–8; lifecycle article (Aug. 23, 2013).'],
+['Political','Picking the wrong horse','Choosing an unsuitable vendor, platform, or strategic direction.','Vendor lacks support capacity or the product cannot meet critical needs.','Perform due diligence on capability, support, fit, and lifecycle.','BFWA Pitfalls index; Systems Failure PDF, Patterns 2 and 5, pp. 4–6.'],
+['Conceptual','Adopting a new technology or methodology for the wrong reason','Choosing because of fashion, imitation, or novelty rather than project need.','Selecting a database because another company uses it.','Start with requirements and compare alternatives objectively.','BFWA Pitfalls index; related: Getting technology lifecycles in sync (Aug. 23, 2013).'],
+['Conceptual','Thinking a new technology or methodology comes for free','Ignoring training, migration, integration, support, and transition costs.','Assuming a framework can be adopted without retraining or rework.','Estimate total adoption and lifecycle cost.','BFWA Pitfalls index; Systems Failure PDF, p. 2 (Cost) and pp. 7–8 (new technology risk).'],
+['Conceptual','Thinking a new technology or methodology will solve all your problems','Expecting a tool or process to fix unrelated organizational or technical issues.','Adopting Agile is expected to resolve poor stakeholder communication automatically.','Diagnose root causes and treat technology/process as one part of the solution.','BFWA Pitfalls index; Negotiations and Lovesongs (Apr. 16, 2008) discusses methodologies and organizational game theory.'],
+['Conceptual','Confusing buzzwords with concepts','Using terminology without understanding the underlying idea.','Calling a system “AI-driven” without specifying what the system actually does.','Require clear definitions, mechanisms, and measurable outcomes.','BFWA Pitfalls index. Title-level summary; individual pitfall page is the detailed source.'],
+['Conceptual','Confusing tools with principles','Assuming a tool's presence means the engineering principle is being followed.','Installing a test framework but writing no meaningful tests.','Understand the principle; select and use tools to support it.','BFWA Pitfalls index. Title-level summary; individual pitfall page is the detailed source.'],
+['Conceptual','Confusing training with skill','Assuming course attendance or certification proves practical competence.','A person completes a class and is immediately assigned a critical architecture role.','Assess demonstrated ability through practical work and experience.','BFWA Pitfalls index; related: TEPES (Jan. 10, 2008) distinguishes talent, education, professionalism, experience, and skills.'],
+['Conceptual','Confusing prototypes with finished products','Treating a demonstration or proof of concept as production-ready.','A prototype UI is mistaken for a nearly complete application.','Define production-readiness: functionality, reliability, security, integration, testing, support.','BFWA Pitfalls index; related: Do not defer the difficult (Aug. 26, 2013), UI mockups before functionality.'],
+['Conceptual','Confusing approach with results','Assuming use of a process guarantees a successful outcome.','A team claims success because it followed Scrum despite unusable software.','Evaluate delivered results, quality, and stakeholder value.','BFWA Pitfalls index; related: Negotiations and Lovesongs (Apr. 16, 2008) methodology discussion.'],
+['Conceptual','Asking the wrong questions','Focusing on a symptom or premature solution rather than the real problem.','Asking how to accelerate coding when the real blocker is unstable requirements.','Reframe the problem; investigate causes before choosing interventions.','BFWA Pitfalls index. Title-level summary; individual pitfall page is the detailed source.']
+];
+const pitfallUrls=[
+'https://bfwa.com/2008/06/23/pitfall-using-the-wrong-developers/',
+'https://bfwa.com/2008/06/23/pitfall-using-the-wrong-metrics-or-none-at-all/',
+'https://bfwa.com/2008/06/23/pitfall-lying-to-yourself-and-others/',
+'https://bfwa.com/2008/06/09/pitfall-not-identifying-and-managing-risks/',
+'https://bfwa.com/2008/05/26/pitfall-adopting-a-technology-or-methodology-without-well-defined-objectives/',
+'https://bfwa.com/2008/06/09/pitfall-misjudging-relative-costs/',
+'https://bfwa.com/2008/06/03/pitfall-allowing-new-features-to-creep-or-pour-in/',
+'https://bfwa.com/2008/06/03/pitfall-allowing-the-specification-to-drift-or-change-without-agreement/',
+'https://bfwa.com/2008/05/30/pitfall-attempting-too-much-too-fast-too-soon/',
+'https://bfwa.com/2008/05/29/pitfall-abandoning-good-software-engineering-practices/',
+'https://bfwa.com/2008/05/14/pitfall-not-educating-and-enlisting-management-before-the-fact/',
+'https://bfwa.com/2008/05/16/pitfall-underestimating-the-resistance/',
+'https://bfwa.com/2008/04/04/pitfall-overselling-the-technology-or-methodology/',
+'https://bfwa.com/2008/04/15/pitfall-not-recognizing-the-politics-of-architecture/',
+'https://bfwa.com/2008/04/14/pitfall-getting-religious-about-the-technology-or-methdology/',
+'https://bfwa.com/2008/04/17/pitfall-getting-on-the-feature-release-treadmill/',
+'https://bfwa.com/2008/04/18/pitfall-betting-the-company-on-a-given-technology-or-methodology/',
+'https://bfwa.com/2008/05/21/pitfall-picking-the-wrong-horse/',
+'https://bfwa.com/2008/02/25/pitfall-adopting-a-new-technology-or-methodology-for-the-wrong-reason/',
+'https://bfwa.com/2008/02/26/pitfall-thinking-a-new-techology-or-methodology-comes-for-free/',
+'https://bfwa.com/2008/02/27/pitfall-thinking-a-new-technology-or-methodology-will-solve-all-your-it-problems/',
+'https://bfwa.com/2008/03/24/pitfall-confusing-buzzwords-with-concepts/',
+'https://bfwa.com/2008/03/25/pitfall-confusing-tools-with-principles/',
+'https://bfwa.com/2008/03/27/pitfall-confusing-training-with-skill/',
+'https://bfwa.com/2008/04/03/pitfall-confusing-prototypes-with-finished-products/',
+'https://bfwa.com/2008/04/26/pitfall-confusing-approach-with-results/',
+'https://bfwa.com/2008/04/27/pitfall-asking-the-wrong-questions/'
+];
+const list=document.getElementById('pitfallList');
+pitfalls.forEach((p,i)=>{const d=document.createElement('details');d.className='pitfall';d.dataset.category=p[0];d.dataset.search=p.join(' ').toLowerCase();d.innerHTML=`<summary>${i+1}. ${p[1]} <span class="tag">${p[0]}</span></summary><div class="details-body"><p><strong>Meaning:</strong> ${p[2]}</p><p><strong>Illustrative scenario:</strong> ${p[3]}</p><p><strong>Possible response:</strong> ${p[4]}</p><div class="source"><strong>Primary source:</strong> <a href="${pitfallUrls[i]}" target="_blank" rel="noopener">Webster’s individual pitfall article</a><br><strong>Additional citation trail:</strong> ${p[5]}</div></div>`;list.appendChild(d)});
+function filterItems(){const q=search.value.toLowerCase().trim(),c=category.value;document.querySelectorAll('.pitfall').forEach(el=>{const okq=!q||(el.dataset.search||'').includes(q)||el.innerText.toLowerCase().includes(q);const okc=!c||el.dataset.category===c;el.hidden=!(okq&&okc)})}
+search.addEventListener('input',filterItems);category.addEventListener('change',filterItems);
+function clearFilters(){search.value='';category.value='';filterItems()}
+function gradeQuiz(){const keys={q1:'b',q2:'a',q3:'b',q4:'a',q5:'b',q6:'b',q7:'a',q8:'b'};let score=0;Object.keys(keys).forEach(k=>{const a=document.querySelector(`input[name="${k}"]:checked`);if(a&&a.value===keys[k])score++});document.getElementById('quizForm').classList.add('showanswers');document.getElementById('score').innerHTML=`<div class="note good"><strong>Score: ${score}/8</strong> — Review the explanations under each question.</div>`}
+function resetQuiz(){document.getElementById('quizForm').classList.remove('showanswers');document.getElementById('score').innerHTML=''}
+</script>
+</body>
+</html>
